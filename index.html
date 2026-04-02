@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ناڤەندا ستراتیژی - Monitor v4.9</title>
+    <title>ناڤەندا ستراتیژی - Monitor v5.1</title>
+
+    <!-- Google tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W9NMQ35N1C"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-W9NMQ35N1C');
+    </script>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,27 +22,25 @@
         
         .main-wrapper { width: 100%; max-width: 480px; margin: 0 auto; padding: 20px; min-height: 90vh; }
         
-        /* Navigation Style */
         .nav-menu { background: rgba(21, 17, 16, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #241f1d; padding: 10px; display: flex; justify-content: space-around; font-size: 11px; font-weight: bold; position: sticky; top: 0; z-index: 100; overflow-x: auto; white-space: nowrap; }
         .nav-link { color: #71717a; transition: all 0.3s; cursor: pointer; padding: 8px 12px; flex-shrink: 0; }
         .nav-link.active { color: #d97706; border-bottom: 2px solid #d97706; }
         
-        /* Header Style */
-        .header-section { border-bottom: 1px solid #1f1a18; padding-bottom: 20px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .header-section { border-bottom: 1px solid #1f1a18; padding-bottom: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
         .clock-display { font-size: 32px; font-weight: 900; color: #d97706; letter-spacing: 1px; }
         .icon-box { background-color: #d97706; width: 52px; height: 52px; border-radius: 18px; display: flex; align-items: center; justify-content: center; color: #000; }
         
-        /* Cards Style */
-        .dashboard-card { background-color: #151110; border: 1px solid #241f1d; border-radius: 25px; padding: 22px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; overflow: hidden; }
+        #news-feed { display: flex; flex-direction: column; gap: 15px; padding-bottom: 50px; }
+        
+        .dashboard-card { background-color: #151110; border: 1px solid #241f1d; border-radius: 25px; padding: 22px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; overflow: hidden; }
         .inner-stat-box { background-color: #1b1614; border: 1px solid #2c2522; border-radius: 15px; padding: 15px; }
         .stat-value { font-size: 36px; font-weight: 900; line-height: 1; }
         
         .text-orange { color: #d97706; }
         
-        .refresh-btn { background-color: #d97706; color: #000; padding: 14px 24px; border-radius: 18px; font-size: 16px; font-weight: 900; width: 100%; border: none; cursor: pointer; transition: 0.2s; }
+        .refresh-btn { background-color: #d97706; color: #000; padding: 14px 24px; border-radius: 18px; font-size: 16px; font-weight: 900; width: 100%; border: none; cursor: pointer; transition: 0.2s; margin-bottom: 20px; }
         .refresh-btn:active { transform: scale(0.98); }
 
-        /* Map Styles */
         .map-container { width: 100%; height: 400px; background: #0a0a0a; border-radius: 15px; position: relative; border: 1px solid #222; background-image: radial-gradient(#1a1a1a 1px, transparent 1px); background-size: 20px 20px; overflow: hidden; }
         .map-point { position: absolute; width: 10px; height: 10px; background: #d97706; border-radius: 50%; box-shadow: 0 0 10px #d97706; z-index: 10; }
         .map-point::after { content: attr(data-label); position: absolute; top: 12px; right: -20px; color: white; font-size: 10px; white-space: nowrap; font-weight: bold; text-shadow: 0 0 4px black; }
@@ -58,7 +65,8 @@
         .spin { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
-        .social-btn { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #71717a; }
+        .social-btn { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #71717a; transition: color 0.3s; }
+        .social-btn:hover { color: #d97706; }
     </style>
 </head>
 <body>
@@ -84,33 +92,21 @@
             </div>
         </div>
 
-        <button onclick="fetchLiveUpdates()" class="refresh-btn flex items-center justify-center gap-3 mb-6">
+        <button onclick="fetchLiveUpdates()" class="refresh-btn flex items-center justify-center gap-3">
             <i id="refresh-icon" class="fas fa-sync-alt"></i> نووکرنا داتایان
         </button>
 
         <div id="news-feed">
-            <!-- New Trump Updates -->
+            <!-- News Item 1 -->
             <div class="dashboard-card border-orange-500">
                 <div class="flex justify-between items-center mb-3">
                     <span class="bg-orange-600 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">🚨 بلەز</span>
                     <h2 class="text-md font-black text-white">ترامپ ل سەر ڕەوشا ئیرانێ</h2>
                 </div>
-                <div class="space-y-3 text-right">
-                    <div class="border-b border-zinc-800 pb-2">
-                        <p class="text-[12px] text-zinc-300 leading-relaxed font-bold">
-                            🚩 ترامپ: ئیران توندترین و دڕندەترین ڕژێمە ل سەر ئەردی.
-                        </p>
-                    </div>
-                    <div class="border-b border-zinc-800 pb-2">
-                        <p class="text-[12px] text-zinc-300 leading-relaxed font-bold">
-                            🚩 ترامپ: هێزێن دەریایی یێن ئیرانێ نەمان، و هێزێن وان یێن ئاسمانی د ویرانەنە.
-                        </p>
-                    </div>
-                    <div>
-                        <p class="text-[12px] text-zinc-300 leading-relaxed font-bold">
-                            🚩 ترامپ: ئەم نێزیکی ب دەستڤەئینانا ئارمانجێن ستراتیژی یێن ئۆپەراسیۆنێن مە یێن سەربازی دژی ئیرانێ دبین.
-                        </p>
-                    </div>
+                <div class="text-right">
+                    <p class="text-[13px] text-zinc-200 leading-relaxed font-bold">
+                        🚩 ترامپ دبێژیت کو ئیران "توندترین و دڕندەترین ڕژێمە ل سەر رویێ ئەردی".
+                    </p>
                 </div>
                 <div class="mt-3 pt-3 border-t border-zinc-800 flex justify-between items-center">
                     <span class="text-zinc-500 text-[10px] italic">بەلاڤکرن: ٤:١٤ AM</span>
@@ -118,16 +114,54 @@
                 </div>
             </div>
 
-            <!-- Previous Updates -->
+            <!-- News Item 2 -->
             <div class="dashboard-card border-zinc-800">
                 <div class="flex justify-between items-center mb-3">
-                    <span class="bg-zinc-700 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">بەری نوکە</span>
-                    <h2 class="text-md font-black text-white">ترامپ ل دۆر ڕێککەفتنێ</h2>
+                    <span class="bg-red-600 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">⚠️ ئەمنی</span>
+                    <h2 class="text-md font-black text-white">هێزێن ئیرانێ</h2>
                 </div>
-                <div class="space-y-2 text-right">
-                    <p class="text-[12px] text-zinc-300 leading-relaxed">
-                        ئەگەر چ ڕێککەفتن ل گەل ئیرانێ نەهێتە کرن، ئەز دێ بەرپرسیارەتیێ ئێخمە سەر ملێن جیه دی فانس.
+                <div class="text-right">
+                    <p class="text-[13px] text-zinc-200 leading-relaxed font-bold">
+                        🚩 ترامپ: هێزێن دەریایی یێن ئیرانێ نەمان، و هێزێن وان یێن ئاسمانی د حالەتەکێ ویرانە دانە.
                     </p>
+                </div>
+                <div class="mt-3 pt-3 border-t border-zinc-800 flex justify-between items-center">
+                    <span class="text-zinc-500 text-[10px]">بەلاڤکرن: ٤:١٥ AM</span>
+                    <span class="text-orange text-[10px] font-bold">دۆسیەیا سەربازی <i class="fas fa-fighter-jet ml-1"></i></span>
+                </div>
+            </div>
+
+            <!-- News Item 3 -->
+            <div class="dashboard-card border-zinc-800">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="bg-blue-600 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">🎯 ئارمانج</span>
+                    <h2 class="text-md font-black text-white">ئۆپەراسیۆنێن سەربازی</h2>
+                </div>
+                <div class="text-right">
+                    <p class="text-[13px] text-zinc-200 leading-relaxed font-bold">
+                        🚩 گۆتارا ترامپ: ئەم نێزیکی ب دەستڤەئینانا ئارمانجێن ستراتیژی یێن ئۆپەراسیۆنێن مە یێن سەربازی dژی ئیرانێ دبین.
+                    </p>
+                </div>
+                <div class="mt-3 pt-3 border-t border-zinc-800 flex justify-between items-center">
+                    <span class="text-zinc-500 text-[10px]">بەلاڤکرن: ٤:١٦ AM</span>
+                    <span class="text-orange text-[10px] font-bold">ستراتیژی <i class="fas fa-crosshairs ml-1"></i></span>
+                </div>
+            </div>
+
+            <!-- News Item 4 -->
+            <div class="dashboard-card border-zinc-800">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="bg-zinc-700 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">گرێبەست</span>
+                    <h2 class="text-md font-black text-white">ڕێککەفتن دگەل ئیرانێ</h2>
+                </div>
+                <div class="text-right">
+                    <p class="text-[13px] text-zinc-200 leading-relaxed font-bold">
+                        🚩 ترامپ: ئەگەر چ ڕێککەفتن ل گەل ئیرانێ نەهێتە کرن، ئەز دێ بەرپرسیارەتیێ ئێخمە سەر ملێن (جیه دی فانس).
+                    </p>
+                </div>
+                <div class="mt-3 pt-3 border-t border-zinc-800 flex justify-between items-center">
+                    <span class="text-zinc-500 text-[10px]">بەلاڤکرن: ٣:٤٥ AM</span>
+                    <span class="text-orange text-[10px] font-bold">دۆسیەیا سیاسی <i class="fas fa-handshake ml-1"></i></span>
                 </div>
             </div>
         </div>
@@ -151,23 +185,20 @@
                     <path d="M12 21L11 13L2 12.5L11 11.5L12 3L13 11.5L22 12.5L13 13L12 21Z" fill="#ef4444" stroke="#ffffff" stroke-width="0.3"/>
                 </svg>
             </div>
-
-            <div class="space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="inner-stat-box text-center">
-                        <p class="text-[11px] text-zinc-500 mb-2">تێکشکاندن</p>
-                        <p class="stat-value text-green-500">4</p>
-                    </div>
-                    <div class="inner-stat-box text-center">
-                        <p class="text-[11px] text-zinc-500 mb-2">کۆى درۆنان</p>
-                        <p class="stat-value text-red-500">7</p>
-                    </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="inner-stat-box text-center">
+                    <p class="text-[11px] text-zinc-500 mb-2">تێکشکاندن</p>
+                    <p class="stat-value text-green-500">4</p>
+                </div>
+                <div class="inner-stat-box text-center">
+                    <p class="text-[11px] text-zinc-500 mb-2">کۆى درۆنان</p>
+                    <p class="stat-value text-red-500">7</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Page: Privacy -->
+    <!-- Page: Privacy (ZENGIN) -->
     <div id="privacy-page" class="main-wrapper hidden">
         <div class="dashboard-card mt-5 text-right">
             <h2 class="text-xl font-black text-orange mb-6 flex items-center justify-end gap-2">
@@ -175,46 +206,56 @@
             </h2>
             <div class="space-y-4">
                 <div class="bg-zinc-900/50 p-4 rounded-xl border-r-4 border-orange-600">
-                    <h3 class="text-white font-bold mb-2">١. نێهێنییا بکاربەران</h3>
-                    <p class="text-[11px] text-zinc-400 leading-relaxed">ئەم چ داتایێن کەسی یێن بکارهێنەران پاشکەفت ناکەین. چاڤدێریا تە د ناڤ وێبسایتی دا ب تەمامی نەناسراو دمینیت.</p>
+                    <h3 class="text-white font-bold mb-2">١. نێهێنییا بکاربەران (Privacy)</h3>
+                    <p class="text-[11px] text-zinc-400 leading-relaxed">
+                        ئەم ب چ شێوەیەک داتایێن کەسی یێن بکارهێنەران وەک (ناڤ، ژمارە، یان جهێ مانێ) پاشکەفت ناکەین. سیستەمێ مە تەنێ بۆ مەبەستێن ئامارێن گشتی یێن وەک ژمارەیا سەرەدانییان داتایێن نەناسیار (Anonymous) بکار دئینیت.
+                    </p>
                 </div>
                 <div class="bg-zinc-900/50 p-4 rounded-xl border-r-4 border-orange-600">
-                    <h3 class="text-white font-bold mb-2">٢. پاراستنا دژە-هاک</h3>
-                    <p class="text-[11px] text-zinc-400 leading-relaxed">هەمی پەیوەندیێن ناڤەندا مە ب سیستەمێ SSL یێ ٢٥٦-بیت هاتییە نیشانکرن.</p>
+                    <h3 class="text-white font-bold mb-2">٢. سەکورێتی و پاراستنا دژە-هاک</h3>
+                    <p class="text-[11px] text-zinc-400 leading-relaxed">
+                        ناڤەندا مە ب سیستەمێن پێشکەفتی یێن SSL و Firewall دهێتە پاراستن. ئەم دڵنیاییێ ددەینە هەمی بینەران کو سەرەدانییا ڤێ پلاتفۆرمێ ب تەواوی یا پاراستی یە و چ مەترسییێن ئەلیکترۆنی ل سەر ئامێرێن وان دروست ناکەت.
+                    </p>
                 </div>
                 <div class="bg-zinc-900/50 p-4 rounded-xl border-r-4 border-orange-600">
-                    <h3 class="text-white font-bold mb-2">٣. ژێدەرێن زانیاریان</h3>
-                    <p class="text-[11px] text-zinc-400 leading-relaxed">زانیاریێن ئەمنی ب تنێ ژ ژێدەرێن باوەرپێکری و پشتڕاستکری دهێنە بەلاڤکرن.</p>
+                    <h3 class="text-white font-bold mb-2">٣. شەفافیەت د زانیارییان دا</h3>
+                    <p class="text-[11px] text-zinc-400 leading-relaxed">
+                        هەمی زانیارییێن ل ڤێرە دهێنە بەلاڤکرن، ژ ژێدەرێن مەیدانی یێن پشتڕاستکری دهێن، و ئەم بەرپرسن ژ پاراستنا ڕاستییا نووچەیان بێی لایەنگیری.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Page: About -->
+    <!-- Page: About (ZENGIN) -->
     <div id="about-page" class="main-wrapper hidden text-right">
         <div class="dashboard-card mt-5">
             <h2 class="text-xl font-black text-orange mb-6 flex items-center justify-end gap-2">
                 دەربارەی مە <i class="fas fa-info-circle"></i>
             </h2>
-            <div class="space-y-4">
-                <p class="text-[12px] leading-relaxed text-zinc-300 font-bold">
-                    ناڤەندا ستراتیژی، دەزگەهەکێ سەربەخۆیێ چاڤدێریا هەواڵێن ئەمنی، سەربازی و جیۆپۆلەتیکی یە ل هەرێما کوردستانێ و ناوچەیێ.
-                </p>
-                <div class="grid grid-cols-1 gap-3">
-                    <div class="inner-stat-box flex items-center gap-3">
-                        <i class="fas fa-bullseye text-orange"></i>
-                        <div class="text-right">
-                            <h4 class="text-[11px] text-white font-bold">ئارمانجا مە</h4>
-                            <p class="text-[10px] text-zinc-500">بەلاڤکرنا ڕاستیان و بەرچاڤکرنا ڕەوشا ئەمنی ب شەفافیەت.</p>
-                        </div>
+            <div class="space-y-5">
+                <div>
+                    <h3 class="text-white font-bold text-sm mb-2">ناڤەندا مە چییە؟</h3>
+                    <p class="text-[12px] leading-relaxed text-zinc-300 font-medium">
+                        ناڤەندا ستراتیژی، دەزگەهەکێ مێدیایی و لێکۆڵینەوەیی یێ سەربەخۆیە کو د سالا ٢٠٢٤ێ دا هاتییە دامەزراندن. ئارمانجا مە یا سەرەکی دابینکرنا نووچەیێن بلەز و ڕاست و بێلایەنە ل سەر ڕەوشا ئەمنی و سەربازی ل هەرێما کوردستانێ و ناوچەیێن جیران.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-zinc-900/50 p-3 rounded-lg border border-zinc-800">
+                        <i class="fas fa-bullseye text-orange mb-2"></i>
+                        <h4 class="text-white text-[11px] font-bold">ئارمانجا مە</h4>
+                        <p class="text-[9px] text-zinc-500">گەهاندنا ڕاستییا ڕەوشێ ب ئاوایەکێ زانستی.</p>
                     </div>
-                    <div class="inner-stat-box flex items-center gap-3">
-                        <i class="fas fa-microchip text-orange"></i>
-                        <div class="text-right">
-                            <h4 class="text-[11px] text-white font-bold">تەکنۆلۆژیا مە</h4>
-                            <p class="text-[10px] text-zinc-500">بکارئینانا نەخشەیێن زیرەک و سیستەمێن چاڤدێریا درۆنان ب شێوەیەکێ دەمی.</p>
-                        </div>
+                    <div class="bg-zinc-900/50 p-3 rounded-lg border border-zinc-800">
+                        <i class="fas fa-eye text-orange mb-2"></i>
+                        <h4 class="text-white text-[11px] font-bold">دیدەوەریا مە</h4>
+                        <p class="text-[9px] text-zinc-500">بوونا ژێدەرێ ئێکێ یێ متمانەپێکری ل کوردستانێ.</p>
                     </div>
+                </div>
+                <div class="inner-stat-box mt-4">
+                    <p class="text-[10px] text-zinc-500">وەشانێ نوکە یێ سیستەمی</p>
+                    <p class="text-white font-bold text-sm">Strategic Monitor Enterprise v5.1</p>
+                    <p class="text-[9px] text-zinc-600 mt-1">H.Q. Duhok, Kurdistan Region</p>
                 </div>
             </div>
         </div>
@@ -223,24 +264,23 @@
     <!-- Page: Contact -->
     <div id="contact-page" class="main-wrapper hidden text-right">
         <div class="dashboard-card mt-5">
-            <h2 class="text-xl font-black text-orange mb-6 text-center">پەیوەندی <i class="fas fa-headset ml-2"></i></h2>
-            <div class="flex justify-around items-center mb-8">
+            <h2 class="text-xl font-black text-orange mb-8 text-center">پەیوەندی <i class="fas fa-headset ml-2"></i></h2>
+            <div class="grid grid-cols-3 gap-4 mb-8">
                 <a href="https://wa.me/9647502274597" target="_blank" class="social-btn">
-                    <i class="fab fa-whatsapp text-3xl text-green-500 mb-2"></i>
+                    <i class="fab fa-whatsapp text-4xl text-green-500 mb-2"></i>
                     <span class="text-[10px] font-bold">واتسئەپ</span>
                 </a>
                 <a href="https://www.facebook.com/share/1CH7xKqX5n/" target="_blank" class="social-btn">
-                    <i class="fab fa-facebook text-3xl text-blue-600 mb-2"></i>
+                    <i class="fab fa-facebook text-4xl text-blue-600 mb-2"></i>
                     <span class="text-[10px] font-bold">فەیسبووک</span>
                 </a>
                 <a href="https://www.instagram.com/chiy4stan" target="_blank" class="social-btn">
-                    <i class="fab fa-instagram text-3xl text-pink-600 mb-2"></i>
+                    <i class="fab fa-instagram text-4xl text-pink-600 mb-2"></i>
                     <span class="text-[10px] font-bold">ئینستاگرام</span>
                 </a>
             </div>
-            <div class="bg-zinc-900/40 p-4 rounded-2xl border border-zinc-800 text-center">
-                <p class="text-[10px] text-zinc-500 mb-2">کاتژمێرێن کارکرنێ:</p>
-                <p class="text-white text-[12px] font-black">٢٤ کاتژمێر / ٧ ڕۆژێن حەفتیێ</p>
+            <div class="text-center p-4 bg-zinc-900/30 rounded-2xl border border-zinc-800">
+                <p class="text-[11px] text-zinc-500">بۆ هەر پرسیاڕەکێ یان ناردنا زانیارییان، پەیوەندیێ ب مە بکەن.</p>
             </div>
         </div>
     </div>
