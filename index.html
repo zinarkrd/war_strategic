@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ناڤەندا ستراتیژی - Monitor v5.2</title>
+    <title>ناڤەندا ستراتیژی - Monitor v5.3</title>
 
-    <!-- Firebase SDK (Compat Version) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -19,31 +19,30 @@
         .main-wrapper { width: 100%; max-width: 480px; margin: 0 auto; padding: 20px; min-height: 90vh; padding-bottom: 120px; }
         
         .nav-menu { background: rgba(21, 17, 16, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #241f1d; padding: 10px; display: flex; justify-content: space-around; font-size: 11px; font-weight: bold; position: sticky; top: 0; z-index: 100; overflow-x: auto; white-space: nowrap; }
-        .nav-link { color: #71717a; transition: all 0.3s; cursor: pointer; padding: 8px 12px; flex-shrink: 0; }
-        .nav-link.active { color: #d97706; border-bottom: 2px solid #d97706; }
+        .nav-link { color: #71717a; transition: all 0.3s; cursor: pointer; padding: 8px 12px; flex-shrink: 0; border-radius: 12px; }
+        .nav-link.active { color: #d97706; background: rgba(217, 119, 6, 0.1); border-bottom: 2px solid #d97706; }
         
         .header-section { border-bottom: 1px solid #1f1a18; padding-bottom: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
         .clock-display { font-size: 32px; font-weight: 900; color: #d97706; letter-spacing: 1px; }
-        .icon-box { background-color: #d97706; width: 52px; height: 52px; border-radius: 18px; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; transition: transform 0.2s; }
+        .icon-box { background-color: #d97706; width: 52px; height: 52px; border-radius: 18px; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; transition: transform 0.2s; box-shadow: 0 0 15px rgba(217, 119, 6, 0.3); }
         .icon-box:active { transform: scale(0.9); }
         
-        #news-feed { display: flex; flex-direction: column; gap: 15px; }
-        
-        .dashboard-card { background-color: #151110; border: 1px solid #241f1d; border-radius: 25px; padding: 22px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; overflow: hidden; animation: fadeIn 0.4s ease-out; }
+        .dashboard-card { background-color: #151110; border: 1px solid #241f1d; border-radius: 25px; padding: 22px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; overflow: hidden; animation: fadeIn 0.4s ease-out; margin-bottom: 15px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .inner-stat-box { background-color: #1b1614; border: 1px solid #2c2522; border-radius: 15px; padding: 15px; }
         .stat-value { font-size: 36px; font-weight: 900; line-height: 1; }
         
         .text-orange { color: #d97706; }
-        .refresh-btn { background-color: #d97706; color: #000; padding: 14px 24px; border-radius: 18px; font-size: 16px; font-weight: 900; width: 100%; border: none; cursor: pointer; transition: 0.2s; margin-bottom: 20px; }
+        .refresh-btn { background-color: #d97706; color: #000; padding: 14px 24px; border-radius: 18px; font-size: 16px; font-weight: 900; width: 100%; border: none; cursor: pointer; transition: 0.2s; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.2); }
         .refresh-btn:active { transform: scale(0.98); opacity: 0.9; }
 
-        .map-container { width: 100%; height: 400px; background: #0a0a0a; border-radius: 15px; position: relative; border: 1px solid #222; background-image: radial-gradient(#1a1a1a 1px, transparent 1px); background-size: 20px 20px; overflow: hidden; }
+        /* Map & Grid Styling */
+        .map-container { width: 100%; height: 350px; background: #0a0a0a; border-radius: 20px; position: relative; border: 1px solid #222; background-image: radial-gradient(#1a1a1a 1px, transparent 1px); background-size: 20px 20px; overflow: hidden; }
         .map-point { position: absolute; width: 10px; height: 10px; background: #d97706; border-radius: 50%; box-shadow: 0 0 10px #d97706; z-index: 10; }
         .map-point::after { content: attr(data-label); position: absolute; top: 12px; right: -20px; color: white; font-size: 10px; white-space: nowrap; font-weight: bold; text-shadow: 0 0 4px black; }
         
-        .jet-svg { position: absolute; width: 42px; height: 42px; z-index: 20; filter: drop-shadow(0 0 12px #ef4444); opacity: 0; pointer-events: none; }
+        .jet-svg { position: absolute; width: 35px; height: 35px; z-index: 20; filter: drop-shadow(0 0 8px #ef4444); opacity: 0; pointer-events: none; }
         @keyframes flyToErbil {
             0% { opacity: 0; top: 45%; right: 88%; transform: rotate(145deg) scale(0.7); }
             10% { opacity: 1; }
@@ -51,18 +50,24 @@
         }
         .jet-erbil { animation: flyToErbil 4s linear infinite; }
 
-        #admin-lock-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+        /* Privacy & About Special styles */
+        .info-pill { background: rgba(217, 119, 6, 0.1); border-right: 3px solid #d97706; padding: 15px; border-radius: 8px 15px 15px 8px; margin-bottom: 12px; }
+        
+        /* Contact Cards */
+        .contact-card { display: flex; align-items: center; justify-content: space-between; background: #1b1614; padding: 18px; border-radius: 20px; border: 1px solid #2c2522; margin-bottom: 12px; transition: 0.3s; text-decoration: none; color: inherit; }
+        .contact-card:active { transform: scale(0.97); background: #241f1d; }
+
+        /* Admin Elements */
+        #admin-lock-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; backdrop-filter: blur(5px); }
         #admin-panel { position: fixed; bottom: 0; left: 0; right: 0; background: #1a1513; border-top: 3px solid #d97706; padding: 20px; max-width: 480px; margin: 0 auto; z-index: 500; display: none; box-shadow: 0 -10px 40px rgba(0,0,0,0.8); border-radius: 30px 30px 0 0; }
         .admin-input { width: 100%; background: #0c0908; border: 1px solid #333; border-radius: 12px; padding: 15px; color: white; margin-bottom: 12px; font-size: 15px; outline: none; text-align: right; }
-        .delete-btn { color: #444; font-size: 12px; cursor: pointer; padding: 5px; transition: 0.2s; }
-        .delete-btn:hover { color: #ef4444; }
+        .delete-btn { color: #444; font-size: 14px; cursor: pointer; padding: 8px; transition: 0.2s; }
+        .delete-btn:hover { color: #ef4444; transform: scale(1.2); }
 
-        .hidden { display: none; }
         .spin { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .social-btn { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #71717a; transition: color 0.3s; }
         
-        .info-section { border-right: 2px solid #d97706; padding-right: 15px; margin-bottom: 20px; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -84,7 +89,6 @@
                     <h1 class="text-xl font-black text-white leading-none">ناڤەندا <br><span class="text-orange">ستراتیژی</span></h1>
                     <p class="text-[10px] text-zinc-500 mt-1 font-bold">چاڤدێریا هەواڵێن سەربازی و ئەمنی</p>
                 </div>
-                <!-- UPDATED ICON: Changed from satellite-dish to fighter-jet as requested -->
                 <div id="admin-trigger" class="icon-box"><i class="fas fa-fighter-jet text-2xl"></i></div>
             </div>
         </div>
@@ -93,7 +97,7 @@
             <i id="refresh-icon" class="fas fa-sync-alt"></i> نووکرنا داتایان
         </button>
 
-        <div id="news-feed">
+        <div id="news-feed" class="space-y-4">
             <div class="text-center py-20 text-zinc-700 italic font-bold">ل هیڤیا نووچەیان...</div>
         </div>
     </div>
@@ -110,7 +114,7 @@
                 <div class="map-point" style="top: 10%; right: 55%;" data-label="ئاشەوا"></div>
                 <div class="map-point" style="top: 12%; right: 48%;" data-label="سکرینێ"></div>
                 <div class="map-point" style="top: 52%; right: 42%;" data-label="هەولێر"></div>
-                <div class="map-point city-main bg-zinc-700" style="top: 45%; right: 88%;" data-label="مووسڵ"></div>
+                <div class="map-point bg-zinc-700" style="top: 45%; right: 88%;" data-label="مووسڵ"></div>
                 
                 <svg class="jet-svg jet-erbil" viewBox="0 0 24 24" fill="none">
                     <path d="M12 21L11 13L2 12.5L11 11.5L12 3L13 11.5L22 12.5L13 13L12 21Z" fill="#ef4444" stroke="#ffffff" stroke-width="0.3"/>
@@ -130,54 +134,96 @@
     </div>
 
     <!-- Page: Privacy -->
-    <div id="privacy-page" class="main-wrapper hidden">
-        <div class="dashboard-card mt-5 text-right">
-            <h2 class="text-xl font-black text-orange mb-6 flex items-center justify-end gap-2">
-                سیاسەتا پاراستنێ <i class="fas fa-user-shield"></i>
+    <div id="privacy-page" class="main-wrapper hidden text-right">
+        <div class="dashboard-card mt-5">
+            <h2 class="text-2xl font-black text-orange mb-6 flex items-center justify-end gap-3">
+                سیاسەتا پاراستنێ <i class="fas fa-shield-halved"></i>
             </h2>
-            <div class="space-y-6">
-                <div class="info-section">
-                    <h3 class="text-white font-bold mb-2">١. پاراستنا داتایێن کەسی</h3>
-                    <p class="text-[12px] text-zinc-400 leading-relaxed">ئەم ب چ شێوەیەک دەستکاری یان کۆمکرنا داتایێن کەسی وەک ناڤ، ناڤنیشان، یان جهێ مانێ ناکەین. سیستەمێ مە ب تنێ بۆ نمایشکرنا پێزانینان هاتییە دروستکرن.</p>
+            
+            <div class="space-y-4">
+                <div class="info-pill">
+                    <h3 class="text-white font-bold text-sm mb-1">١. نهێنیا بکاربەران</h3>
+                    <p class="text-[12px] text-zinc-400 leading-relaxed">ئەم ب چو شێوەیەک زانیاریێن کەسی وەک (ناڤ، ژمارا تەلەفۆنێ، یان جهێ مانێ) کۆم ناکەین. سیستەم ب تەواوی "Anonymized" کار دکەت.</p>
                 </div>
-                <div class="info-section">
-                    <h3 class="text-white font-bold mb-2">٢. ئەمنییەتا ئەپلیکەیشنێ</h3>
-                    <p class="text-[12px] text-zinc-400 leading-relaxed">ناڤەندا ستراتیژی بکارئینانا پرۆتۆکۆلێن SSL یێن پێشکەفتی دکەت بۆ گواستنەوا داتایان. هەمی نووچە ب شێوەیەکێ پاراستی (Encryption) دگەهنە بکاربەران.</p>
+                
+                <div class="info-pill">
+                    <h3 class="text-white font-bold text-sm mb-1">٢. پاراستنا داتایان</h3>
+                    <p class="text-[12px] text-zinc-400 leading-relaxed">هەمی داتایێن دگەهنە ئەپلیکەیشنێ ب رێکا پرۆتۆکۆلێن SSL یێن جیهانی دهێنە پاراستن دا کو چو هاککەرز نەشێن دەستکاریێ تێدا بکەن.</p>
                 </div>
-                <div class="info-section">
-                    <h3 class="text-white font-bold mb-2">٣. مافێ بەلاڤکرنێ</h3>
-                    <p class="text-[12px] text-zinc-400 leading-relaxed">هەر نووچەیەکا ل ڤێرێ دهێتە بەلاڤکرن، مافێ ناڤەندا ستراتیژییە. کۆپیکرن بێ ئاماژەدان ب ژێدەر، دێ بکاربەر ڕووبەڕووی یاسایێ کەت.</p>
+
+                <div class="info-pill">
+                    <h3 class="text-white font-bold text-sm mb-1">٣. جهێ مانی (Location)</h3>
+                    <p class="text-[12px] text-zinc-400 leading-relaxed">ئەپ ب چو شێوەیەک دەستەهەڵاتا بینینا GPS یێ تە نینە، بتنێ زانیاریێن گشتی یێن ئاسمانی دهێنە نیشاندان.</p>
                 </div>
+
+                <div class="info-pill">
+                    <h3 class="text-white font-bold text-sm mb-1">٤. مافێن یاسایی</h3>
+                    <p class="text-[12px] text-zinc-400 leading-relaxed">بکارهێنەر یێ بەرپرسە ژ هەر بکارئینانەکا نەدروست، ناڤەندا ستراتیژی مافێ یاسایی یێ هەی سکاڵایێ ل سەر وان لایەنان تۆمار بکەت یێن زانیاریێن مە ب خەلەت بەڵاڤ دکەن.</p>
+                </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-orange-600/10 border border-orange-600/20 rounded-xl text-center">
+                <p class="text-[11px] text-orange-500 font-bold italic">ئەمنیەت و پاراستنا تە، ئارمانجا مەیە.</p>
             </div>
         </div>
     </div>
 
     <!-- Page: About -->
     <div id="about-page" class="main-wrapper hidden text-right">
-        <div class="dashboard-card mt-5">
-            <h2 class="text-xl font-black text-orange mb-6 flex items-center justify-end gap-2">
-                دەربارەی مە <i class="fas fa-info-circle"></i>
+        <div class="dashboard-card mt-5 overflow-visible">
+            <div class="absolute -top-4 -left-4 w-20 h-20 bg-orange-600/10 blur-3xl rounded-full"></div>
+            
+            <h2 class="text-2xl font-black text-orange mb-6 flex items-center justify-end gap-3">
+                دەربارەی مە <i class="fas fa-id-card"></i>
             </h2>
-            <div class="space-y-5">
-                <div class="bg-zinc-900/40 p-4 rounded-2xl border border-zinc-800">
-                    <p class="text-[13px] leading-relaxed text-zinc-200 font-medium">ناڤەندا ستراتیژی بۆ چاڤدێریا هەواڵێن ئەمنی و سەربازی، ئێەکەم دەزگەهێ ئەهلی یێ لایەنێ چاڤدێریکرنا ئاسمانێ دەڤەرێ و پێشهاتێن سەربازییە ل کوردستانێ.</p>
-                </div>
-                
-                <h3 class="text-orange font-bold text-sm mt-4">ئارمانجێن مە:</h3>
-                <ul class="text-[12px] text-zinc-400 space-y-2 pr-2">
-                    <li><i class="fas fa-check-circle text-orange ml-2"></i> گەهاندنا هەواڵێن دروست و پشتڕاستکری.</li>
-                    <li><i class="fas fa-check-circle text-orange ml-2"></i> ئاگەهدارکرنا هاولاتییان ژ هەر مەترسیەکا ئەمنی.</li>
-                    <li><i class="fas fa-check-circle text-orange ml-2"></i> لێکۆڵینەوا ستراتیژی ل سەر پێشهاتێن دەڤەرێ.</li>
-                </ul>
+            
+            <div class="space-y-6">
+                <section>
+                    <h3 class="text-white font-black text-lg mb-2">ناڤەندا ستراتیژی کێیە؟</h3>
+                    <p class="text-[13px] text-zinc-300 leading-relaxed">
+                        ناڤەندا ستراتیژی بۆ چاڤدێریا هەواڵێن ئەمنی و سەربازی، مەزنترین پلاتفۆرمێ ئەهلی یە ل کوردستانێ کو ب شێوەیەکێ "Live" چاڤدێریا ئاسمانێ دەڤەرێ و هەرێمێ دکەت. تیمێ مە پێکدهێت ژ چەندین شارەزایێن تەکنیکی و سەربازی.
+                    </p>
+                </section>
 
-                <div class="inner-stat-box mt-6">
-                    <div class="flex justify-between items-center border-b border-zinc-800 pb-2 mb-2">
-                        <span class="text-zinc-500 text-[10px]">وەشان</span>
-                        <span class="text-white text-[11px] font-bold">Enterprise v5.2 Pro</span>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-zinc-900/50 p-4 rounded-2xl border border-zinc-800">
+                        <i class="fas fa-bullseye text-orange mb-2 text-xl"></i>
+                        <h4 class="text-white text-xs font-bold">دروستی</h4>
+                        <p class="text-[10px] text-zinc-500">زانیاریێن پشتڕاستکری ژ ژێدەرێن مەیدانی.</p>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-zinc-500 text-[10px]">بارەگا</span>
-                        <span class="text-white text-[11px] font-bold">Duhok, Kurdistan</span>
+                    <div class="bg-zinc-900/50 p-4 rounded-2xl border border-zinc-800">
+                        <i class="fas fa-bolt text-orange mb-2 text-xl"></i>
+                        <h4 class="text-white text-xs font-bold">خێرایی</h4>
+                        <p class="text-[10px] text-zinc-500">بەلاڤکرنا هەواڵان د کێمتر ژ خولەکەکێ دا.</p>
+                    </div>
+                </div>
+
+                <section class="border-t border-zinc-800 pt-5">
+                    <h3 class="text-white font-bold text-sm mb-3">ئارمانجێن مە یێن سەرەکی:</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3 justify-end">
+                            <span class="text-[12px] text-zinc-400">هۆشیارکرنا هاولاتییان ژ هەر مەترسیەکا ئاسمانی یان سەربازی.</span>
+                            <i class="fas fa-check-double text-orange mt-1"></i>
+                        </li>
+                        <li class="flex items-start gap-3 justify-end">
+                            <span class="text-[12px] text-zinc-400">تۆمارکرنا پێشهاتێن مێژوویی یێن سەربازی ل دەڤەرێ.</span>
+                            <i class="fas fa-check-double text-orange mt-1"></i>
+                        </li>
+                        <li class="flex items-start gap-3 justify-end">
+                            <span class="text-[12px] text-zinc-400">دابینکرنا نەخشەکێ زیندی بۆ چاڤدێریا ئاسمانێ کوردستانێ.</span>
+                            <i class="fas fa-check-double text-orange mt-1"></i>
+                        </li>
+                    </ul>
+                </section>
+
+                <div class="bg-black/60 p-5 rounded-3xl border border-zinc-800 flex justify-between items-center">
+                    <div class="text-left">
+                        <p class="text-[10px] text-zinc-500">وەشان</p>
+                        <p class="text-white font-black">v5.3 PRO</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] text-zinc-500">پێگەهێ فەرمی</p>
+                        <p class="text-orange font-black">Duhok, KR</p>
                     </div>
                 </div>
             </div>
@@ -187,34 +233,65 @@
     <!-- Page: Contact -->
     <div id="contact-page" class="main-wrapper hidden text-right">
         <div class="dashboard-card mt-5">
-            <h2 class="text-xl font-black text-orange mb-8 text-center">پەیوەندی و پشتگیری <i class="fas fa-headset ml-2"></i></h2>
+            <h2 class="text-2xl font-black text-orange mb-2 text-center">پەیوەندی بکە</h2>
+            <p class="text-[11px] text-zinc-500 text-center mb-8">بۆ هەر لێدوانەک یان پێزانینەکێ، دشێی ئێکسەر پەیوەندیێ ب تیمێ مە بکەی</p>
             
-            <p class="text-[12px] text-center text-zinc-400 mb-8">بۆ هەر لێدوانەک یان گەهاندنا هەواڵێن نهێنی، دشێن ب ڕێکا تۆڕێن جڤاکی پەیوەندیێ ب تیمێ مە بکەن:</p>
-            
-            <div class="grid grid-cols-3 gap-4 mb-10">
-                <a href="https://wa.me/9647502274597" target="_blank" class="social-btn group">
-                    <div class="w-14 h-14 bg-zinc-900 rounded-2xl flex items-center justify-center mb-2 group-hover:bg-green-600 transition-all">
-                        <i class="fab fa-whatsapp text-2xl text-green-500 group-hover:text-white"></i>
+            <div class="space-y-3">
+                <a href="https://wa.me/9647502274597" target="_blank" class="contact-card">
+                    <i class="fas fa-chevron-left text-zinc-700 text-xs"></i>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <p class="text-white font-bold text-sm">واتسئەپ (WhatsApp)</p>
+                            <p class="text-[10px] text-zinc-500">پەیوەندییا بلەز و نامەیێن نهێنی</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-600/10 rounded-xl flex items-center justify-center">
+                            <i class="fab fa-whatsapp text-2xl text-green-500"></i>
+                        </div>
                     </div>
-                    <span class="text-[10px] font-bold">واتسئەپ</span>
                 </a>
-                <a href="https://www.facebook.com/share/1CH7xKqX5n/" target="_blank" class="social-btn group">
-                    <div class="w-14 h-14 bg-zinc-900 rounded-2xl flex items-center justify-center mb-2 group-hover:bg-blue-600 transition-all">
-                        <i class="fab fa-facebook text-2xl text-blue-600 group-hover:text-white"></i>
+
+                <a href="https://www.facebook.com/share/1CH7xKqX5n/" target="_blank" class="contact-card">
+                    <i class="fas fa-chevron-left text-zinc-700 text-xs"></i>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <p class="text-white font-bold text-sm">فەیسبووک (Facebook)</p>
+                            <p class="text-[10px] text-zinc-500">لاپەڕێ فەرمی یێ چاڤدێریێ</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-600/10 rounded-xl flex items-center justify-center">
+                            <i class="fab fa-facebook-f text-2xl text-blue-500"></i>
+                        </div>
                     </div>
-                    <span class="text-[10px] font-bold">فەیسبووک</span>
                 </a>
-                <a href="https://www.instagram.com/chiy4stan" target="_blank" class="social-btn group">
-                    <div class="w-14 h-14 bg-zinc-900 rounded-2xl flex items-center justify-center mb-2 group-hover:bg-pink-600 transition-all">
-                        <i class="fab fa-instagram text-2xl text-pink-600 group-hover:text-white"></i>
+
+                <a href="https://www.instagram.com/chiy4stan" target="_blank" class="contact-card">
+                    <i class="fas fa-chevron-left text-zinc-700 text-xs"></i>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <p class="text-white font-bold text-sm">ئینستاگرام (Instagram)</p>
+                            <p class="text-[10px] text-zinc-500">ڤیدیۆ و وێنەیێن مەیدانی</p>
+                        </div>
+                        <div class="w-12 h-12 bg-pink-600/10 rounded-xl flex items-center justify-center">
+                            <i class="fab fa-instagram text-2xl text-pink-500"></i>
+                        </div>
                     </div>
-                    <span class="text-[10px] font-bold">ئینستاگرام</span>
+                </a>
+
+                <a href="mailto:kurdpost1221@gmail.com" class="contact-card">
+                    <i class="fas fa-chevron-left text-zinc-700 text-xs"></i>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <p class="text-white font-bold text-sm">ئیمێل (Email)</p>
+                            <p class="text-[10px] text-zinc-500">بۆ کارێن فەرمی و ڕیکلامان</p>
+                        </div>
+                        <div class="w-12 h-12 bg-orange-600/10 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-envelope text-2xl text-orange-500"></i>
+                        </div>
+                    </div>
                 </a>
             </div>
 
-            <div class="bg-black/40 p-4 rounded-2xl border border-zinc-800 text-center">
-                <p class="text-[10px] text-zinc-500 mb-1">ئیمێلێ فەرمی:</p>
-                <p class="text-white text-xs font-bold">info@strategic-monitor.iq</p>
+            <div class="mt-8 text-center opacity-30">
+                <p class="text-[10px] font-bold">ALL RIGHTS RESERVED © 2024</p>
             </div>
         </div>
     </div>
@@ -244,7 +321,7 @@
                 <option value="📄 گشتی">📄 گشتی</option>
             </select>
             <button id="send-news-btn" class="refresh-btn !mb-0 !w-2/3 flex items-center justify-center gap-2">
-                بەلاڤکرن <i class="fas fa-fighter-jet"></i>
+                بەلاڤکرن <i class="fas fa-paper-plane"></i>
             </button>
         </div>
     </div>
@@ -252,9 +329,12 @@
     <script>
         const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'strategic-monitor-v5';
-        const ADMIN_PASS = "0318";
+        const ADMIN_PASS = "020303018";
+        const newsCollectionPath = `artifacts/${appId}/public/data/news`;
 
-        firebase.initializeApp(firebaseConfig);
+        if (firebaseConfig.apiKey) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const db = firebase.firestore();
         const auth = firebase.auth();
 
@@ -269,35 +349,42 @@
                 if(localStorage.getItem('is_admin') === 'true') {
                     document.getElementById('admin-panel').style.display = 'block';
                 }
-            } catch(e) { console.error(e); }
+            } catch(e) { console.error("Auth Error:", e); }
         }
 
         function listenNews() {
-            const ref = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('news');
-            ref.orderBy('timestamp', 'desc').onSnapshot(snap => {
-                renderNews(snap);
-            }, err => console.error(err));
+            const ref = db.collection(newsCollectionPath);
+            ref.onSnapshot(snap => {
+                const newsList = [];
+                snap.forEach(doc => {
+                    newsList.push({ id: doc.id, ...doc.data() });
+                });
+                newsList.sort((a, b) => {
+                    const timeA = a.timestamp ? a.timestamp.toMillis() : 0;
+                    const timeB = b.timestamp ? b.timestamp.toMillis() : 0;
+                    return timeB - timeA;
+                });
+                renderNews(newsList);
+            }, err => console.error("Firestore Error:", err));
         }
 
-        function renderNews(snap) {
+        function renderNews(newsList) {
             const feed = document.getElementById('news-feed');
             feed.innerHTML = '';
-            if(snap.empty) {
+            if(newsList.length === 0) {
                 feed.innerHTML = '<div class="text-center py-10 text-zinc-800 font-bold">چ نووچە نینن</div>';
                 return;
             }
-            snap.forEach(doc => {
-                const data = doc.data();
+            newsList.forEach(data => {
                 const isAdmin = localStorage.getItem('is_admin') === 'true';
                 const time = data.timestamp ? data.timestamp.toDate().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'}) : '--:--';
-                
                 const card = document.createElement('div');
                 card.className = `dashboard-card ${data.type === '🚨 بلەز' ? 'border-orange-500' : 'border-zinc-800'}`;
                 card.innerHTML = `
                     <div class="flex justify-between items-center mb-3">
                         <span class="bg-zinc-800 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">${data.type}</span>
                         <div class="flex items-center gap-2">
-                            ${isAdmin ? `<i class="fas fa-trash-alt delete-btn" onclick="deleteNews('${doc.id}')"></i>` : ''}
+                            ${isAdmin ? `<i class="fas fa-trash-alt delete-btn" onclick="deleteNews('${data.id}')"></i>` : ''}
                             <h2 class="text-xs font-black text-white">ناڤەندا ستراتیژی</h2>
                         </div>
                     </div>
@@ -313,24 +400,15 @@
             });
         }
 
-        document.getElementById('main-refresh-btn').onclick = function() {
-            const icon = document.getElementById('refresh-icon');
-            icon.classList.add('spin');
-            db.collection('artifacts').doc(appId).collection('public').doc('data').collection('news')
-                .orderBy('timestamp', 'desc').get().then(snap => {
-                    renderNews(snap);
-                    setTimeout(() => icon.classList.remove('spin'), 1000);
-                });
-        };
-
         async function publish() {
+            if (!auth.currentUser) return;
             const txt = document.getElementById('news-text').value.trim();
             const type = document.getElementById('news-type').value;
             if(!txt) return;
             const btn = document.getElementById('send-news-btn');
             btn.disabled = true;
             try {
-                await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('news').add({
+                await db.collection(newsCollectionPath).add({
                     text: txt, type: type, timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 document.getElementById('news-text').value = '';
@@ -339,8 +417,9 @@
         }
 
         async function deleteNews(id) {
+            if (!auth.currentUser) return;
             if(confirm("دێ ڤێ نووچەیێ ژێببەی؟")) {
-                await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('news').doc(id).delete();
+                try { await db.collection(newsCollectionPath).doc(id).delete(); } catch(e) { console.error(e); }
             }
         }
 
@@ -366,15 +445,22 @@
             listenNews();
         }
 
-        document.getElementById('send-news-btn').onclick = publish;
-
         function showPage(pageId) {
             document.querySelectorAll('.main-wrapper').forEach(p => p.classList.add('hidden'));
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById(pageId + '-page').classList.remove('hidden');
+            const target = document.getElementById(pageId + '-page');
+            if (target) target.classList.remove('hidden');
             document.getElementById('nav-' + pageId).classList.add('active');
             window.scrollTo(0,0);
         }
+
+        document.getElementById('send-news-btn').onclick = publish;
+        document.getElementById('main-refresh-btn').onclick = () => {
+            const icon = document.getElementById('refresh-icon');
+            icon.classList.add('spin');
+            setTimeout(() => icon.classList.remove('spin'), 1000);
+            listenNews();
+        };
 
         function updateClock() {
             document.getElementById('live-time').textContent = new Date().toLocaleTimeString('en-GB', { hour12: false });
@@ -385,4 +471,3 @@
     </script>
 </body>
 </html>
-
