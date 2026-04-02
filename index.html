@@ -23,7 +23,7 @@
         .nav-link.active { color: #d97706; background: rgba(217, 119, 6, 0.1); border-bottom: 2px solid #d97706; }
         
         .header-section { border-bottom: 1px solid #1f1a18; padding-bottom: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
-        .clock-display { font-size: 32px; font-weight: 900; color: #d97706; letter-spacing: 1px; }
+        .clock-display { font-size: 32px; font-weight: 900; color: #d97706; letter-spacing: 1px; min-width: 140px; font-variant-numeric: tabular-nums; }
         .icon-box { background-color: #d97706; width: 52px; height: 52px; border-radius: 18px; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; transition: transform 0.2s; box-shadow: 0 0 15px rgba(217, 119, 6, 0.3); }
         .icon-box:active { transform: scale(0.9); }
         
@@ -79,7 +79,7 @@
     <!-- Page: Home -->
     <div id="home-page" class="main-wrapper">
         <div class="header-section">
-            <div id="live-time" class="clock-display">00:00:00</div>
+            <div id="live-time" class="clock-display">..:..:..</div>
             <div class="logo-container flex items-center gap-3">
                 <div class="text-right">
                     <h1 class="text-xl font-black text-white leading-none">ناڤەندا <br><span class="text-orange">ستراتیژی</span></h1>
@@ -458,20 +458,32 @@
             listenNews();
         };
 
-        function updateClock() {
-            // Fix: Using local time directly to ensure accuracy in the browser environment
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('live-time').textContent = `${hours}:${minutes}:${seconds}`;
+        // Highly Robust Clock System
+        function startClock() {
+            const clockEl = document.getElementById('live-time');
+            function update() {
+                try {
+                    const now = new Date();
+                    const h = String(now.getHours()).padStart(2, '0');
+                    const m = String(now.getMinutes()).padStart(2, '0');
+                    const s = String(now.getSeconds()).padStart(2, '0');
+                    if (clockEl) {
+                        clockEl.textContent = `${h}:${m}:${s}`;
+                    }
+                } catch (err) {
+                    console.error("Clock update failed", err);
+                }
+            }
+            // Update immediately and then every second
+            update();
+            setInterval(update, 1000);
         }
-        
-        // Ensure clock starts immediately and updates every second
-        setInterval(updateClock, 1000);
-        updateClock();
-        initApp();
+
+        // Initialize when window is fully loaded to prevent 00:00:00 state
+        window.onload = function() {
+            startClock();
+            initApp();
+        };
     </script>
 </body>
 </html>
-
