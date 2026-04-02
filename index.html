@@ -37,8 +37,7 @@
         .refresh-btn { background-color: #d97706; color: #000; padding: 14px 24px; border-radius: 18px; font-size: 16px; font-weight: 900; width: 100%; border: none; cursor: pointer; transition: 0.2s; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.2); }
         .refresh-btn:active { transform: scale(0.98); opacity: 0.9; }
 
-        /* Map & Grid Styling */
-        .map-container { width: 100%; height: 350px; background: #0a0a0a; border-radius: 20px; position: relative; border: 1px solid #222; background-image: radial-gradient(#1a1a1a 1px, transparent 1px); background-size: 20px 20px; overflow: hidden; }
+        .map-container { width: 100%; height: 350px; background: #0a0a0a; border-radius: 20px; position: relative; border: 1px solid #222; background-size: 20px 20px; overflow: hidden; }
         .map-point { position: absolute; width: 10px; height: 10px; background: #d97706; border-radius: 50%; box-shadow: 0 0 10px #d97706; z-index: 10; }
         .map-point::after { content: attr(data-label); position: absolute; top: 12px; right: -20px; color: white; font-size: 10px; white-space: nowrap; font-weight: bold; text-shadow: 0 0 4px black; }
         
@@ -50,14 +49,11 @@
         }
         .jet-erbil { animation: flyToErbil 4s linear infinite; }
 
-        /* Privacy & About Special styles */
         .info-pill { background: rgba(217, 119, 6, 0.1); border-right: 3px solid #d97706; padding: 15px; border-radius: 8px 15px 15px 8px; margin-bottom: 12px; }
         
-        /* Contact Cards */
         .contact-card { display: flex; align-items: center; justify-content: space-between; background: #1b1614; padding: 18px; border-radius: 20px; border: 1px solid #2c2522; margin-bottom: 12px; transition: 0.3s; text-decoration: none; color: inherit; }
         .contact-card:active { transform: scale(0.97); background: #241f1d; }
 
-        /* Admin Elements */
         #admin-lock-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; backdrop-filter: blur(5px); }
         #admin-panel { position: fixed; bottom: 0; left: 0; right: 0; background: #1a1513; border-top: 3px solid #d97706; padding: 20px; max-width: 480px; margin: 0 auto; z-index: 500; display: none; box-shadow: 0 -10px 40px rgba(0,0,0,0.8); border-radius: 30px 30px 0 0; }
         .admin-input { width: 100%; background: #0c0908; border: 1px solid #333; border-radius: 12px; padding: 15px; color: white; margin-bottom: 12px; font-size: 15px; outline: none; text-align: right; }
@@ -463,8 +459,15 @@
         };
 
         function updateClock() {
-            document.getElementById('live-time').textContent = new Date().toLocaleTimeString('en-GB', { hour12: false });
+            // Fix: Using local time directly to ensure accuracy in the browser environment
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('live-time').textContent = `${hours}:${minutes}:${seconds}`;
         }
+        
+        // Ensure clock starts immediately and updates every second
         setInterval(updateClock, 1000);
         updateClock();
         initApp();
