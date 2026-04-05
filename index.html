@@ -5,7 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ناڤەندا ستراتیژی - Monitor PRO v6</title>
 
-    <!-- Firebase SDK (Compatibility Mode) -->
+    <!-- Google Analytics (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6Y9S0S56DP"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-6Y9S0S56DP');
+    </script>
+
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -49,21 +59,14 @@
         }
 
         .prediction-box-style { border-right: 4px solid var(--primary); background: rgba(217, 119, 6, 0.03); }
-        
-        .admin-input {
-            width: 100%; background: #000; border: 1px solid #333; padding: 14px;
-            border-radius: 18px; color: white; text-align: right; margin-bottom: 12px; outline: none; font-size: 14px;
-        }
-        .admin-input:focus { border-color: var(--primary); }
 
         .refresh-btn { 
             background: linear-gradient(to right, var(--primary), var(--primary-light));
             color: #000; padding: 16px; border-radius: 20px; font-weight: 900; 
             width: 100%; margin-bottom: 20px; border: none; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.2);
-            cursor: pointer;
         }
 
-        .hidden { display: none !important; }
+        .hidden { display: none; }
         .spin { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
@@ -129,13 +132,11 @@
     <!-- 3. PRIVACY PAGE -->
     <div id="privacy-page" class="main-wrapper hidden">
         <h2 class="section-title">پاراستنا <span>نهێنیان</span></h2>
-        <div class="grid grid-cols-1 gap-3" id="privacy-grid">
-            <!-- Content remains the same -->
+        <div class="grid grid-cols-1 gap-3">
             <div class="dashboard-card !p-5 border-r-4 border-green-600">
                 <h4 class="text-white font-bold text-right mb-2 text-sm">١. پاراستنا داتایێ (End-to-End)</h4>
                 <p class="text-[11px] text-zinc-400 text-right leading-relaxed">هەمی پەیوەندی و زانیاریێن مە دناڤبەرا سێرڤەر و بکارهێنەری دا ب تەمامی د کۆدکرینە.</p>
             </div>
-            <!-- ... other privacy boxes ... -->
             <div class="dashboard-card !p-5 border-r-4 border-blue-600">
                 <h4 class="text-white font-bold text-right mb-2 text-sm">٢. سیستەمێ No-Logs</h4>
                 <p class="text-[11px] text-zinc-400 text-right leading-relaxed">ئەم چ پێزانینێن کەسی یان شوینپێیا بکارهێنەران د سیستەمێ خۆ دا کۆم ناکەین.</p>
@@ -151,176 +152,105 @@
     <div id="about-page" class="main-wrapper hidden">
         <h2 class="section-title">دەربارەی <span>مە</span></h2>
         <div class="dashboard-card text-right">
-            <p class="text-[14px] leading-7 text-zinc-300 font-medium">ناڤەندا ستراتیژی دەزگەهەکێ سەربەخۆ یێ چاڤدێری و شۆپاندنا روودانێن سیاسی و ئەمنی یە ل دەڤەرێ.</p>
+            <p class="text-[14px] leading-7 text-zinc-300 font-medium">
+                ناڤەندا ستراتیژی دەزگەهەکێ سەربەخۆ یێ چاڤدێری و شۆپاندنا روودانێن سیاسی و ئەمنی یە ل دەڤەرێ. کارێ مە یێ سەرەکی دابینکرنا وێنەیەکێ ڕاستەقینە و بێ لایەنە بۆ وان کەسێن دوعا ئایندەیەکێ گەش دکەن.
+            </p>
         </div>
     </div>
 
     <!-- 5. CONTACT PAGE -->
     <div id="contact-page" class="main-wrapper hidden text-right">
         <h2 class="section-title">رێیێن <span>پەیوەندیێ</span></h2>
-        <div class="space-y-4">
+        <div class="grid grid-cols-1 gap-4">
             <a href="https://wa.me/9647502274597" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-[#075e54]/5 border-[#075e54]/20 active:scale-95 transition">
                 <i class="fab fa-whatsapp text-[#25d366] text-2xl"></i>
-                <div class="text-right"><span class="text-white font-bold block">WhatsApp</span></div>
+                <div class="text-right">
+                    <span class="text-white font-bold block">WhatsApp</span>
+                    <span class="text-[10px] text-zinc-500">پەیوەندیا ڕاستەوخۆ</span>
+                </div>
             </a>
             <a href="https://www.instagram.com/chiy4stan?igsh=YndrYTVsYzBwZjhq" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-[#c13584]/5 border-[#c13584]/20 active:scale-95 transition">
                 <i class="fab fa-instagram text-[#e1306c] text-2xl"></i>
-                <div class="text-right"><span class="text-white font-bold block">Instagram</span></div>
+                <div class="text-right">
+                    <span class="text-white font-bold block">Instagram</span>
+                    <span class="text-[10px] text-zinc-500">فۆلۆو بکە بۆ نووترین نووچە</span>
+                </div>
             </a>
-        </div>
-    </div>
-
-    <!-- ADMIN ACCESS (Fingerprint) -->
-    <div id="admin-trigger" class="fixed bottom-6 right-6 w-14 h-14 bg-orange-600/20 rounded-full flex items-center justify-center text-orange-600 border border-orange-600/30 z-[2000] cursor-pointer shadow-lg active:scale-90 transition">
-        <i class="fas fa-fingerprint text-2xl"></i>
-    </div>
-
-    <!-- LOGIN MODAL -->
-    <div id="pass-modal" class="fixed inset-0 bg-black/98 hidden flex items-center justify-center p-8 z-[3000]">
-        <div class="w-full max-w-xs text-center">
-            <div class="w-20 h-20 bg-orange-600/10 rounded-full flex items-center justify-center text-orange-600 mx-auto mb-6">
-                <i class="fas fa-user-shield text-3xl"></i>
-            </div>
-            <h3 class="text-white font-black mb-6 uppercase tracking-widest text-lg">Admin Access</h3>
-            <input type="password" id="pass-input" class="admin-input text-center tracking-[0.5em]" placeholder="••••••••">
-            <button id="login-btn" class="refresh-btn">ENTER SYSTEM</button>
-            <button onclick="document.getElementById('pass-modal').classList.add('hidden')" class="text-zinc-600 text-xs font-bold mt-4 uppercase">Cancel</button>
-        </div>
-    </div>
-
-    <!-- ADVANCED ADMIN PANEL -->
-    <div id="admin-panel" class="fixed inset-x-0 bottom-0 bg-[#151110] border-t-2 border-orange-600 p-6 hidden z-[2500] rounded-t-[40px] shadow-2xl overflow-y-auto max-h-[90vh]">
-        <div class="flex justify-between items-center mb-8">
-            <button onclick="logout()" class="px-4 py-1 bg-red-900/20 text-red-500 rounded-full text-[10px] font-bold">LOGOUT</button>
-            <span class="text-xs font-black text-orange-500 tracking-widest">CONTROL PANEL V6.1</span>
-            <button onclick="document.getElementById('admin-panel').classList.add('hidden')" class="text-zinc-500 p-2"><i class="fas fa-times text-xl"></i></button>
-        </div>
-
-        <div class="space-y-5">
-            <select id="adm-category" class="admin-input" onchange="toggleAdminSub()">
-                <option value="home">سەرەکی (Home Feed)</option>
-                <option value="predictions">پێشبینی (Predictions)</option>
-            </select>
-
-            <div id="sub-admin-wrapper" class="hidden">
-                <select id="adm-sub" class="admin-input">
-                    <option value="short">کورت مەودا</option>
-                    <option value="long">دوور مەودا</option>
-                    <option value="observers">چاڤدێرێن سیاسی و سیاسەتمەداران</option>
-                    <option value="feed">دەرڤەی بوکسان (General Feed)</option>
-                </select>
-            </div>
-
-            <input type="text" id="adm-title" class="admin-input" placeholder="سەردێڕێ بابەتێ...">
-            <textarea id="adm-text" class="admin-input h-40 resize-none" placeholder="ناڤەرۆکێ بنڤیسە..."></textarea>
-            
-            <div class="grid grid-cols-2 gap-3">
-                <input type="text" id="adm-tag" class="admin-input" placeholder="Tag (وەک: LIVE)">
-                <input type="text" id="adm-icon" class="admin-input" placeholder="Icon">
-            </div>
-            
-            <button id="post-btn" class="refresh-btn">بەلاڤکرنا داتایێ</button>
+            <a href="mailto:kurdpost1221@gmail.com" class="dashboard-card flex items-center justify-between p-5 bg-[#d97706]/5 border-[#d97706]/20 active:scale-95 transition">
+                <i class="fas fa-envelope text-[#d97706] text-2xl"></i>
+                <div class="text-right">
+                    <span class="text-white font-bold block">Email</span>
+                    <span class="text-[10px] text-zinc-500">kurdpost1221@gmail.com</span>
+                </div>
+            </a>
+            <a href="https://www.facebook.com/share/1DaNThSCGR/?mibextid=wwXIfr" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-[#1877f2]/5 border-[#1877f2]/20 active:scale-95 transition">
+                <i class="fab fa-facebook-f text-[#1877f2] text-2xl"></i>
+                <div class="text-right">
+                    <span class="text-white font-bold block">Facebook</span>
+                    <span class="text-[10px] text-zinc-500">پەیجێ مە یێ فەرمی</span>
+                </div>
+            </a>
         </div>
     </div>
 
     <script>
-        // CONFIGURATION
         const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'tactical-v6-pro-final';
         const dbPath = `artifacts/${appId}/public/data/monitor_final`;
 
-        // Initialize Firebase ONLY if config exists
-        if (firebaseConfig.apiKey) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        
+        if (firebaseConfig.apiKey) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
 
         let allData = [];
 
-        // INITIALIZATION
         async function init() {
             try {
-                // RULE 3: Auth first
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await auth.signInWithCustomToken(__initial_auth_token).catch(() => auth.signInAnonymously());
+                    await auth.signInWithCustomToken(__initial_auth_token);
                 } else {
                     await auth.signInAnonymously();
                 }
-                
-                // Start listening to data
                 listenToData();
-                startClock();
-            } catch(e) { 
-                console.error("Initialization Error:", e); 
-            }
+            } catch(e) { console.error(e); }
         }
 
         function listenToData() {
+            if (!auth.currentUser) return;
             db.collection(dbPath).onSnapshot(snap => {
                 allData = [];
                 snap.forEach(doc => allData.push({ id: doc.id, ...doc.data() }));
                 renderFeeds();
-            }, (err) => {
-                console.error("Firestore Error:", err);
-            });
-        }
-
-        function toggleAdminSub() {
-            const cat = document.getElementById('adm-category').value;
-            const subWrapper = document.getElementById('sub-admin-wrapper');
-            if (cat === 'predictions') {
-                subWrapper.classList.remove('hidden');
-            } else {
-                subWrapper.classList.add('hidden');
-            }
+            }, err => console.error("Error fetching:", err));
         }
 
         function renderFeeds() {
-            const feeds = ['box-short', 'box-long', 'box-observers', 'feed-home', 'feed-predictions'];
-            feeds.forEach(id => {
+            ['box-short', 'box-long', 'box-observers', 'feed-home', 'feed-predictions'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) el.innerHTML = '';
             });
 
-            const isAdmin = localStorage.getItem('is_admin_v6') === 'true';
-
-            const sortedData = [...allData].sort((a,b) => {
-                const tA = a.timestamp ? a.timestamp.toMillis() : 0;
-                const tB = b.timestamp ? b.timestamp.toMillis() : 0;
-                return tB - tA;
-            });
+            const sortedData = [...allData].sort((a,b) => (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0));
 
             sortedData.forEach(item => {
                 if (item.category === 'home') {
-                    const target = document.getElementById('feed-home');
-                    if(target) target.appendChild(createCard(item, isAdmin));
+                    document.getElementById('feed-home').appendChild(createCard(item));
                 } else if (item.category === 'predictions') {
-                    if (item.sub === 'short') appendToBox('box-short', item, isAdmin);
-                    else if (item.sub === 'long') appendToBox('box-long', item, isAdmin);
-                    else if (item.sub === 'observers') appendToBox('box-observers', item, isAdmin);
-                    else {
-                        const targetPred = document.getElementById('feed-predictions');
-                        if(targetPred) targetPred.appendChild(createCard(item, isAdmin));
-                    }
+                    if (item.sub === 'short') appendToBox('box-short', item);
+                    else if (item.sub === 'long') appendToBox('box-long', item);
+                    else if (item.sub === 'observers') appendToBox('box-observers', item);
+                    else document.getElementById('feed-predictions').appendChild(createCard(item));
                 }
-            });
-            
-            ['box-short', 'box-long', 'box-observers'].forEach(id => {
-                const el = document.getElementById(id);
-                if(el && el.innerHTML === '') el.innerHTML = '<span class="opacity-30 text-[11px]">چ پێزانیین نینن...</span>';
             });
         }
 
-        function appendToBox(boxId, item, isAdmin) {
+        function appendToBox(boxId, item) {
             const container = document.getElementById(boxId);
             if (!container) return;
             const div = document.createElement('div');
             div.className = "p-3 bg-black/40 rounded-xl mb-3 border-r-2 border-orange-500/40 relative";
             div.innerHTML = `
-                <div class="flex justify-between items-center mb-2">
-                    ${isAdmin ? `<i class="fas fa-trash-alt text-[10px] text-red-900 cursor-pointer p-1" onclick="deleteDoc('${item.id}')"></i>` : '<span></span>'}
+                <div class="flex justify-end mb-2">
                     <span class="text-[9px] text-orange-500 font-black">${item.tag || 'NEW'}</span>
                 </div>
                 <p class="text-zinc-200"><strong>${item.title}:</strong> ${item.text}</p>
@@ -328,17 +258,14 @@
             container.appendChild(div);
         }
 
-        function createCard(item, isAdmin) {
+        function createCard(item) {
             const div = document.createElement('div');
             div.className = "dashboard-card";
             const time = item.timestamp ? item.timestamp.toDate().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'}) : '--:--';
             div.innerHTML = `
                 <div class="flex justify-between items-center mb-4">
                     <span class="text-[10px] text-orange-500 font-black uppercase tracking-widest bg-orange-600/10 px-3 py-1 rounded-full">${item.tag || 'UPDATE'}</span>
-                    <div class="flex items-center gap-3">
-                        ${isAdmin ? `<i class="fas fa-trash-alt text-zinc-800 text-sm cursor-pointer hover:text-red-600 transition" onclick="deleteDoc('${item.id}')"></i>` : ''}
-                        <span class="text-[10px] text-zinc-600 font-black">${time}</span>
-                    </div>
+                    <span class="text-[10px] text-zinc-600 font-black">${time}</span>
                 </div>
                 <h3 class="text-white font-black mb-3 text-right text-lg">${item.title}</h3>
                 <p class="text-right text-[15px] leading-relaxed text-zinc-300 font-medium">${item.text}</p>
@@ -346,92 +273,14 @@
             return div;
         }
 
-        document.getElementById('post-btn').onclick = async () => {
-            const user = auth.currentUser;
-            if (!user) {
-                alert("پەیوەندی داتابەیسێ نەهاتیە دروستکرن. جارەکا دی لاپەڕەی نوو بکە.");
-                return;
-            }
-
-            const btn = document.getElementById('post-btn');
-            const titleInput = document.getElementById('adm-title');
-            const textInput = document.getElementById('adm-text');
-
-            const data = {
-                category: document.getElementById('adm-category').value,
-                sub: document.getElementById('adm-sub').value,
-                title: titleInput.value.trim(),
-                text: textInput.value.trim(),
-                tag: document.getElementById('adm-tag').value.trim() || 'UPDATE',
-                icon: document.getElementById('adm-icon').value.trim() || 'fa-newspaper',
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            };
-            
-            if (!data.text || !data.title) {
-                alert("تکایە هەمی خانەیان پڕ بکە");
-                return;
-            }
-            
-            btn.disabled = true; 
-            btn.innerText = "ل حالێ هنارتنێ دا...";
-
-            try {
-                await db.collection(dbPath).add(data);
-                titleInput.value = '';
-                textInput.value = '';
-                btn.innerText = "سەرکەفتی بوو";
-                setTimeout(() => { btn.disabled = false; btn.innerText = "بەلاڤکرنا داتایێ"; }, 1500);
-            } catch(e) { 
-                console.error("Post Error:", e);
-                btn.disabled = false; 
-                btn.innerText = "خەلەتیەک هەبوو"; 
-            }
-        };
-
-        async function deleteDoc(id) {
-            if(confirm("ئایە تو یێ پشتراستی؟")) {
-                try { await db.collection(dbPath).doc(id).delete(); } catch(e) { console.error(e); }
-            }
-        }
-
         function showPage(id) {
             document.querySelectorAll('.main-wrapper').forEach(p => p.classList.add('hidden'));
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            const p = document.getElementById(id + '-page');
-            const n = document.getElementById('nav-' + id);
-            if(p) p.classList.remove('hidden');
-            if(n) n.classList.add('active');
+            document.getElementById(id + '-page').classList.remove('hidden');
+            document.getElementById('nav-' + id).classList.add('active');
             window.scrollTo(0,0);
         }
 
-        let adminClicks = 0;
-        document.getElementById('admin-trigger').onclick = () => {
-            adminClicks++;
-            if(adminClicks >= 3) {
-                if(localStorage.getItem('is_admin_v6') === 'true') {
-                    document.getElementById('admin-panel').classList.remove('hidden');
-                } else {
-                    document.getElementById('pass-modal').classList.remove('hidden');
-                }
-                adminClicks = 0;
-            }
-            setTimeout(() => adminClicks = 0, 2000);
-        };
-
-        document.getElementById('login-btn').onclick = () => {
-            const pass = document.getElementById('pass-input').value;
-            if(pass === "020303018") {
-                localStorage.setItem('is_admin_v6', 'true');
-                document.getElementById('pass-modal').classList.add('hidden');
-                document.getElementById('admin-panel').classList.remove('hidden');
-                renderFeeds();
-            } else {
-                alert("پاسوۆردێ خەلەت!");
-            }
-        };
-
-        function logout() { localStorage.removeItem('is_admin_v6'); location.reload(); }
-        
         function refreshData() {
             const icon = document.getElementById('refresh-icon');
             icon.classList.add('spin');
@@ -439,19 +288,12 @@
             setTimeout(() => icon.classList.remove('spin'), 1000);
         }
 
-        function startClock() {
-            setInterval(() => {
-                const now = new Date();
-                const h = String(now.getHours()).padStart(2, '0');
-                const m = String(now.getMinutes()).padStart(2, '0');
-                const s = String(now.getSeconds()).padStart(2, '0');
-                const timerEl = document.getElementById('live-time');
-                if(timerEl) timerEl.innerText = `${h}:${m}:${s}`;
-            }, 1000);
-        }
+        setInterval(() => {
+            const el = document.getElementById('live-time');
+            if(el) el.innerText = new Date().toLocaleTimeString('en-GB', {hour12:false});
+        }, 1000);
 
-        // Run On Load
-        window.addEventListener('DOMContentLoaded', init);
+        window.onload = init;
     </script>
 </body>
 </html>
