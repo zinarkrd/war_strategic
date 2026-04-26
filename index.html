@@ -5,6 +5,15 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
    <title>ناڤەندا ستراتیژی - Monitor PRO v6</title>
 
+   <!-- Google Analytics -->
+   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6Y9S0S56DP"></script>
+   <script>
+     window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+     gtag('js', new Date());
+     gtag('config', 'G-6Y9S0S56DP');
+   </script>
+
    <!-- Firebase SDK -->
    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -14,15 +23,59 @@
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
    <style>
        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;400;700;900&display=swap');
-       :root { --primary: #d97706; --bg: #0c0908; }
-       body { font-family: 'Vazirmatn', sans-serif; background-color: var(--bg); color: #d1d5db; margin: 0; padding: 0; overflow-x: hidden; }
+       
+       :root {
+           --primary: #d97706;
+           --primary-light: #fbbf24;
+           --bg: #0c0908;
+           --card-bg: #151110;
+       }
+
+       body {
+           font-family: 'Vazirmatn', sans-serif;
+           background-color: var(--bg);
+           color: #d1d5db;
+           margin: 0; padding: 0;
+           overflow-x: hidden;
+           -webkit-tap-highlight-color: transparent;
+       }
+       
        .main-wrapper { width: 100%; max-width: 480px; margin: 0 auto; padding: 20px; min-height: 90vh; padding-bottom: 120px; }
-       .nav-menu { background: rgba(21, 17, 16, 0.96); backdrop-filter: blur(20px); border-bottom: 1px solid #2d2421; padding: 12px 5px; display: flex; justify-content: space-around; position: sticky; top: 0; z-index: 1000; }
-       .nav-link { color: #71717a; font-size: 11px; font-weight: 900; cursor: pointer; padding: 8px 10px; border-radius: 12px; }
+       
+       .nav-menu {
+           background: rgba(21, 17, 16, 0.96); backdrop-filter: blur(20px);
+           border-bottom: 1px solid #2d2421; padding: 12px 5px;
+           display: flex; justify-content: space-around; position: sticky; top: 0; z-index: 1000;
+       }
+       
+       .nav-link { color: #71717a; font-size: 11px; font-weight: 900; cursor: pointer; padding: 8px 10px; border-radius: 12px; transition: 0.3s; }
        .nav-link.active { color: var(--primary); background: rgba(217, 119, 6, 0.1); }
-       .dashboard-card { background: linear-gradient(145deg, #151110, #0e0b0a); border: 1px solid #241f1d; border-radius: 24px; padding: 22px; margin-bottom: 18px; }
-       .input-admin { width: 100%; background: #1a1514; border: 1px solid #332a28; border-radius: 12px; padding: 14px; color: white; margin-bottom: 10px; font-size: 14px; }
+       
+       .dashboard-card {
+           background: linear-gradient(145deg, #151110, #0e0b0a);
+           border: 1px solid #241f1d; border-radius: 24px; padding: 22px; margin-bottom: 18px;
+           box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+       }
+
+       .prediction-box-style { border-right: 4px solid var(--primary); background: rgba(217, 119, 6, 0.03); }
+
+       .refresh-btn {
+           background: linear-gradient(to right, var(--primary), var(--primary-light));
+           color: #000; padding: 16px; border-radius: 20px; font-weight: 900;
+           width: 100%; margin-bottom: 20px; border: none; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.2);
+       }
+
+       .input-admin {
+           width: 100%; background: #1a1514; border: 1px solid #332a28; border-radius: 12px;
+           padding: 14px; color: white; margin-bottom: 10px; font-size: 14px;
+       }
+
        .hidden { display: none; }
+       .spin { animation: spin 1s linear infinite; }
+       @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+       
+       .section-title { font-size: 24px; font-weight: 900; color: white; margin-bottom: 24px; text-align: right; }
+       .section-title span { color: var(--primary); }
    </style>
 </head>
 <body>
@@ -30,77 +83,148 @@
    <nav class="nav-menu">
        <div onclick="showPage('home')" id="nav-home" class="nav-link active">سەرەکی</div>
        <div onclick="showPage('predictions')" id="nav-predictions" class="nav-link">پێشبینی</div>
-       <div onclick="showPage('admin')" id="nav-admin" class="nav-link"><i class="fas fa-lock"></i> کۆنترۆڵ</div>
+       <div onclick="showPage('admin')" id="nav-admin" class="nav-link"><i class="fas fa-lock text-[10px]"></i> کۆنترۆڵ</div>
+       <div onclick="showPage('about')" id="nav-about" class="nav-link">دەربارەی مە</div>
        <div onclick="showPage('contact')" id="nav-contact" class="nav-link">پەیوەندی</div>
    </nav>
 
+   <!-- 1. HOME PAGE -->
    <div id="home-page" class="main-wrapper">
        <div class="flex justify-between items-center mb-8">
            <div id="live-time" class="text-3xl font-black text-orange-500 font-mono tracking-tighter">00:00:00</div>
-           <div class="text-right text-white"><h1 class="text-2xl font-black">ناڤەندا <span class="text-orange-500">ستراتیژی</span></h1></div>
+           <div class="text-right">
+               <h1 class="text-2xl font-black text-white leading-tight">ناڤەندا <br><span class="text-orange-500">ستراتیژی</span></h1>
+           </div>
        </div>
+       <button onclick="refreshData()" class="refresh-btn flex items-center justify-center gap-3">
+           <i id="refresh-icon" class="fas fa-sync-alt"></i> نووکرنا زانیاریان
+       </button>
        <div id="feed-home" class="space-y-4"></div>
    </div>
 
+   <!-- 2. PREDICTIONS PAGE -->
    <div id="predictions-page" class="main-wrapper hidden">
-       <h2 class="text-2xl font-black text-right mb-6">چاڤدێریا <span class="text-orange-500">پێشبینیان</span></h2>
-       <div id="box-short" class="dashboard-card border-r-4 border-orange-500 text-right"></div>
-       <div id="box-long" class="dashboard-card border-r-4 border-blue-500 text-right"></div>
-       <div id="feed-predictions" class="space-y-4"></div>
+       <h2 class="section-title">چاڤدێریا <span>پێشبینیان</span></h2>
+       
+       <div class="dashboard-card prediction-box-style">
+           <div class="flex items-center justify-end gap-2 mb-4">
+               <span class="text-white font-black">پێشبینیێن کورت مەودا</span>
+               <i class="fas fa-bolt text-orange-500"></i>
+           </div>
+           <div id="box-short" class="text-[13px] text-zinc-300 text-right leading-relaxed space-y-3">ل چاڤەڕێیا داتایێ...</div>
+       </div>
+
+       <div class="dashboard-card prediction-box-style">
+           <div class="flex items-center justify-end gap-2 mb-4">
+               <span class="text-white font-black">پێشبینیێن دوور مەودا</span>
+               <i class="fas fa-calendar-alt text-orange-500"></i>
+           </div>
+           <div id="box-long" class="text-[13px] text-zinc-300 text-right leading-relaxed space-y-3">ل چاڤەڕێیا داتایێ...</div>
+       </div>
+
+       <div class="dashboard-card prediction-box-style">
+           <div class="flex items-center justify-end gap-2 mb-4">
+               <span class="text-white font-black">پێشبینیێن چاڤدێرێن سیاسی</span>
+               <i class="fas fa-user-tie text-orange-500"></i>
+           </div>
+           <div id="box-observers" class="text-[13px] text-zinc-300 text-right leading-relaxed space-y-3">ل چاڤەڕێیا داتایێ...</div>
+       </div>
+
+       <div id="feed-predictions" class="mt-8 space-y-4"></div>
    </div>
 
+   <!-- 3. ADMIN PAGE (KONTROL) -->
    <div id="admin-page" class="main-wrapper hidden">
        <div id="login-section" class="dashboard-card">
            <h2 class="text-xl font-black text-white mb-6 text-center">چوونە ژوور بۆ <span class="text-orange-500">کۆنترۆڵێ</span></h2>
-           <input type="text" id="admin-user" class="input-admin" placeholder="ناڤێ بەکارهێنەری">
-           <input type="password" id="admin-pass" class="input-admin" placeholder="پاسوۆرد">
+           <input type="text" id="admin-email" class="input-admin" placeholder="ئیمێل...">
+           <input type="password" id="admin-pass" class="input-admin" placeholder="پاسوۆرد...">
            <button onclick="handleLogin()" class="w-full bg-orange-600 text-black font-black py-4 rounded-xl mt-2 active:scale-95 transition">چوونە ژوور</button>
        </div>
 
        <div id="control-panel" class="hidden">
            <div class="flex justify-between items-center mb-6">
                <button onclick="logout()" class="text-xs text-red-500 font-bold underline">دەرکەفتن</button>
-               <h2 class="text-xl font-black text-white">بەلاڤکرنا <span class="text-orange-500">زانیاریان</span></h2>
+               <h2 class="section-title mb-0">بەلاڤکرنا <span>زانیاریان</span></h2>
            </div>
+
            <div class="dashboard-card space-y-4">
                <select id="post-category" class="input-admin" onchange="toggleAdminSub()">
                    <option value="home">نویچەیێن سەرەکی (Home)</option>
                    <option value="predictions">پێشبینی (Predictions)</option>
                </select>
+
                <div id="admin-sub-wrap" class="hidden">
                    <select id="post-sub" class="input-admin">
                        <option value="short">کورت مەودا</option>
                        <option value="long">دوور مەودا</option>
+                       <option value="observers">چاڤدێرێن سیاسی</option>
                    </select>
                </div>
+
                <input type="text" id="post-tag" class="input-admin" placeholder="تاگ (نموونە: بەپەلە)">
                <input type="text" id="post-title" class="input-admin" placeholder="ناڤ و نیشان">
-               <textarea id="post-text" class="input-admin h-32" placeholder="دەقێ زانیاریێ..."></textarea>
-               <button onclick="submitPost()" id="publish-btn" class="w-full bg-green-600 text-black font-black py-4 rounded-xl shadow-lg">بەلاڤ بکە</button>
+               <textarea id="post-text" class="input-admin h-32" placeholder="دەقێ نویچەی بنڤیسە..."></textarea>
+
+               <button onclick="submitPost()" id="publish-btn" class="w-full bg-green-600 text-black font-black py-4 rounded-xl shadow-lg active:scale-95 transition">بەلاڤ بکە</button>
            </div>
-           <div id="admin-history-list" class="mt-8 space-y-2"></div>
+
+           <div class="mt-8">
+               <h3 class="text-white font-bold text-right mb-4">ڕێڤەبرنا نویچەیان:</h3>
+               <div id="admin-history-list" class="space-y-2"></div>
+           </div>
        </div>
    </div>
 
+   <!-- 4. ABOUT PAGE -->
+   <div id="about-page" class="main-wrapper hidden">
+       <h2 class="section-title">دەربارەی <span>مە</span></h2>
+       <div class="dashboard-card text-right">
+           <p class="text-[14px] leading-7 text-zinc-300 font-medium">
+               ناڤەندا ستراتیژی دەزگەهەکێ سەربەخۆ یێ چاڤدێری و شۆپاندنا روودانێن سیاسی و ئەمنی یە ل دەڤەرێ. کارێ مە یێ سەرەکی دابینکرنا وێنەیەکێ ڕاستەقینە و بێ لایەنە.
+           </p>
+       </div>
+   </div>
+
+   <!-- 5. CONTACT PAGE -->
    <div id="contact-page" class="main-wrapper hidden text-right">
-       <h2 class="text-2xl font-black text-white mb-6">پەیوەندی</h2>
-       <div class="space-y-4">
-           <a href="https://wa.me/9647502274597" class="dashboard-card flex justify-between items-center">
-               <i class="fab fa-whatsapp text-green-500 text-2xl"></i>
-               <div class="text-right"><span class="block text-white font-bold">WhatsApp</span><span class="text-xs text-zinc-500">+964 750 227 4597</span></div>
+       <h2 class="section-title">رێیێن <span>پەیوەندیێ</span></h2>
+       <div class="grid grid-cols-1 gap-4">
+           <a href="https://wa.me/9647502274597" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-[#075e54]/5 border-[#075e54]/20 active:scale-95 transition">
+               <i class="fab fa-whatsapp text-[#25d366] text-2xl"></i>
+               <div class="text-right">
+                   <span class="text-white font-bold block">WhatsApp / Mobile</span>
+                   <span class="text-[12px] text-zinc-400">+964 750 227 4597</span>
+               </div>
            </a>
-           <a href="https://www.instagram.com/chiy4stan" class="dashboard-card flex justify-between items-center">
-               <i class="fab fa-instagram text-pink-500 text-2xl"></i>
-               <div class="text-right"><span class="block text-white font-bold">Instagram</span><span class="text-xs text-zinc-500">@chiy4stan</span></div>
+           <a href="https://www.instagram.com/chiy4stan?igsh=YndrYTVsYzBwZjhq" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-[#c13584]/5 border-[#c13584]/20 active:scale-95 transition">
+               <i class="fab fa-instagram text-[#e1306c] text-2xl"></i>
+               <div class="text-right">
+                   <span class="text-white font-bold block">Instagram</span>
+                   <span class="text-[12px] text-zinc-400">@chiy4stan</span>
+               </div>
+           </a>
+           <a href="mailto:kurdpost1221@gmail.com" class="dashboard-card flex items-center justify-between p-5 bg-[#d97706]/5 border-[#d97706]/20 active:scale-95 transition">
+               <i class="fas fa-envelope text-[#d97706] text-2xl"></i>
+               <div class="text-right">
+                   <span class="text-white font-bold block">Email</span>
+                   <span class="text-[12px] text-zinc-400">kurdpost1221@gmail.com</span>
+               </div>
+           </a>
+           <a href="https://www.facebook.com/share/1DaNThSCGR/?mibextid=wwXIfr" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-[#1877f2]/5 border-[#1877f2]/20 active:scale-95 transition">
+               <i class="fab fa-facebook-f text-[#1877f2] text-2xl"></i>
+               <div class="text-right">
+                   <span class="text-white font-bold block">Facebook</span>
+                   <span class="text-[12px] text-zinc-400">فەرمی پەیج</span>
+               </div>
            </a>
        </div>
    </div>
 
    <script>
-       // Security: داتا زانیارییەکانی چوونەژوورەوە لێرە بە شێوەی ئاسایی دانانێین
-       // ئەمانە کۆدی پارێزراوی ئیمێڵ و پاسوۆردەکەتن (Encoded)
-       const _u = "emluYXJicmhhbm11c3RlZmE="; // zinarbrhanmustefa
-       const _p = "emluYXJicmhhbg==";         // zinarbrhan
+       // Security Hashing (Simple)
+       const _u = "zinarbrhanmustefa";
+       const _p = "zinarbrhan";
 
        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
        const appId = typeof __app_id !== 'undefined' ? __app_id : 'tactical-v6-pro-final';
@@ -110,6 +234,7 @@
        const db = firebase.firestore();
        const auth = firebase.auth();
 
+       let allData = [];
        let isAdmin = false;
 
        async function init() {
@@ -121,74 +246,112 @@
 
        function listenToData() {
            db.collection(dbPath).onSnapshot(snap => {
-               const data = [];
-               snap.forEach(doc => data.push({ id: doc.id, ...doc.data() }));
-               renderUI(data);
+               allData = [];
+               snap.forEach(doc => allData.push({ id: doc.id, ...doc.data() }));
+               renderUI();
            });
        }
 
-       function renderUI(data) {
-           const home = document.getElementById('feed-home');
-           const pred = document.getElementById('feed-predictions');
-           const adminHist = document.getElementById('admin-history-list');
-           [home, pred, adminHist].forEach(el => el.innerHTML = '');
+       function renderUI() {
+           const boxes = ['box-short', 'box-long', 'box-observers', 'feed-home', 'feed-predictions', 'admin-history-list'];
+           boxes.forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = ''; });
 
-           data.sort((a,b) => (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0));
+           const sorted = [...allData].sort((a,b) => (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0));
 
-           data.forEach(item => {
-               const card = document.createElement('div');
-               card.className = "dashboard-card text-right";
-               card.innerHTML = `<h3 class="text-white font-bold">${item.title}</h3><p class="text-sm text-zinc-400 mt-2">${item.text}</p>`;
-               
-               if(item.category === 'home') home.appendChild(card);
-               else pred.appendChild(card);
+           sorted.forEach(item => {
+               const card = createCard(item);
+               if (item.category === 'home') document.getElementById('feed-home').appendChild(card);
+               else if (item.category === 'predictions') {
+                   if (['short','long','observers'].includes(item.sub)) {
+                       const box = document.getElementById('box-' + item.sub);
+                       box.innerHTML += `<div class="p-3 bg-black/40 rounded-xl mb-3 border-r-2 border-orange-500/40"><p class="text-zinc-200"><strong>${item.title}:</strong> ${item.text}</p></div>`;
+                   } else {
+                       document.getElementById('feed-predictions').appendChild(card);
+                   }
+               }
 
-               if(isAdmin) {
+               if (isAdmin) {
                    const h = document.createElement('div');
-                   h.className = "bg-white/5 p-3 rounded flex justify-between";
-                   h.innerHTML = `<button onclick="deleteDoc('${item.id}')" class="text-red-500">Delete</button> <span class="text-xs">${item.title}</span>`;
-                   adminHist.appendChild(h);
+                   h.className = "bg-white/5 p-3 rounded-lg flex justify-between items-center text-xs mb-2";
+                   h.innerHTML = `<button onclick="deleteDoc('${item.id}')" class="text-red-500 font-bold">ژێببە</button> <span class="text-zinc-400 truncate ml-2">${item.title}</span>`;
+                   document.getElementById('admin-history-list').appendChild(h);
                }
            });
        }
 
+       function createCard(item) {
+           const div = document.createElement('div');
+           div.className = "dashboard-card";
+           const time = item.timestamp ? item.timestamp.toDate().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'}) : '--:--';
+           div.innerHTML = `
+               <div class="flex justify-between items-center mb-4">
+                   <span class="text-[10px] text-orange-500 font-black uppercase bg-orange-600/10 px-3 py-1 rounded-full">${item.tag || 'UPDATE'}</span>
+                   <span class="text-[10px] text-zinc-600 font-black">${time}</span>
+               </div>
+               <h3 class="text-white font-black mb-3 text-right text-lg">${item.title}</h3>
+               <p class="text-right text-[15px] leading-relaxed text-zinc-300 font-medium">${item.text}</p>
+           `;
+           return div;
+       }
+
        function handleLogin() {
-           const u = btoa(document.getElementById('admin-user').value);
-           const p = btoa(document.getElementById('admin-pass').value);
-           if(u === _u && p === _p) {
+           const u = document.getElementById('admin-email').value;
+           const p = document.getElementById('admin-pass').value;
+           if (u === _u && p === _p) {
                isAdmin = true;
                document.getElementById('login-section').classList.add('hidden');
                document.getElementById('control-panel').classList.remove('hidden');
-               listenToData();
-           } else alert("Invalid!");
+               renderUI();
+           } else alert("شاشەیە!");
        }
 
        function logout() { isAdmin = false; location.reload(); }
+
+       function toggleAdminSub() { document.getElementById('admin-sub-wrap').classList.toggle('hidden', document.getElementById('post-category').value !== 'predictions'); }
 
        async function submitPost() {
            const title = document.getElementById('post-title').value;
            const text = document.getElementById('post-text').value;
            const cat = document.getElementById('post-category').value;
-           if(!title || !text) return alert("Fill all!");
-           await db.collection(dbPath).add({
-               title, text, category: cat,
-               timestamp: firebase.firestore.FieldValue.serverTimestamp()
-           });
-           alert("Published!");
+           const sub = document.getElementById('post-sub').value;
+           if(!title || !text) return alert("خانەیان پڕ بکە!");
+           
+           document.getElementById('publish-btn').disabled = true;
+           try {
+               await db.collection(dbPath).add({
+                   title, text, category: cat, tag: document.getElementById('post-tag').value || 'UPDATE',
+                   sub: cat === 'predictions' ? sub : '',
+                   timestamp: firebase.firestore.FieldValue.serverTimestamp()
+               });
+               document.getElementById('post-title').value = '';
+               document.getElementById('post-text').value = '';
+               alert("بە سەرکەفتی بەلاڤ بوو!");
+           } catch(e) { alert("Error!"); }
+           document.getElementById('publish-btn').disabled = false;
        }
 
-       async function deleteDoc(id) { if(confirm("Sure?")) await db.collection(dbPath).doc(id).delete(); }
+       async function deleteDoc(id) { if(confirm("ژێببەم؟")) await db.collection(dbPath).doc(id).delete(); }
 
        function showPage(id) {
            document.querySelectorAll('.main-wrapper').forEach(p => p.classList.add('hidden'));
            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
            document.getElementById(id + '-page').classList.remove('hidden');
            document.getElementById('nav-' + id).classList.add('active');
+           window.scrollTo(0,0);
        }
 
-       function toggleAdminSub() { document.getElementById('admin-sub-wrap').classList.toggle('hidden', document.getElementById('post-category').value !== 'predictions'); }
+       function refreshData() {
+           const icon = document.getElementById('refresh-icon');
+           icon.classList.add('spin');
+           listenToData();
+           setTimeout(() => icon.classList.remove('spin'), 1000);
+       }
 
-       setInterval(() => { document.getElementById('live-time').innerText = new Date().toLocaleTimeString('en-GB', {hour12:false}); }, 1000);
+       setInterval(() => {
+           const el = document.getElementById('live-time');
+           if(el) el.innerText = new Date().toLocaleTimeString('en-GB', {hour12:false});
+       }, 1000);
+
        window.onload = init;
    </script>
 </body>
