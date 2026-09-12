@@ -1,358 +1,508 @@
 <!DOCTYPE html>
 <html lang="ku" dir="rtl">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-   <title>ناڤەندا ستراتیژی - Monitor PRO v6</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ناڤەندا ستراتیژی - Monitor PRO v7</title>
 
-   <!-- Google Analytics -->
-   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6Y9S0S56DP"></script>
-   <script>
-     window.dataLayer = window.dataLayer || [];
-     function gtag(){dataLayer.push(arguments);}
-     gtag('js', new Date());
-     gtag('config', 'G-6Y9S0S56DP');
-   </script>
+    <!-- Tailwind & Icons & SweetAlert2 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-   <!-- Firebase SDK -->
-   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;400;700;900&display=swap');
+        
+        :root {
+            --primary: #d97706;
+            --primary-light: #fbbf24;
+            --bg: #0a0807;
+            --card-bg: #151110;
+        }
 
-   <script src="https://cdn.tailwindcss.com"></script>
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-   <style>
-       @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;400;700;900&display=swap');
-       
-       :root {
-           --primary: #d97706;
-           --primary-light: #fbbf24;
-           --bg: #0c0908;
-           --card-bg: #151110;
-       }
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: var(--bg);
+            color: #d1d5db;
+            margin: 0; padding: 0;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .main-wrapper { 
+            width: 100%; 
+            max-width: 480px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            min-height: 100vh; 
+            padding-bottom: 90px; 
+        }
+        
+        .nav-menu {
+            background: rgba(15, 12, 11, 0.85); 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(217, 119, 6, 0.2); 
+            padding: 12px 10px;
+            padding-bottom: calc(12px + env(safe-area-inset-bottom));
+            display: flex; 
+            justify-content: space-around; 
+            position: fixed; 
+            bottom: 0; 
+            width: 100%;
+            max-width: 480px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.5);
+        }
+        
+        .nav-link { 
+            color: #52525b; 
+            font-size: 10px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            padding: 10px 12px; 
+            border-radius: 16px; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .nav-link i { font-size: 18px; margin-bottom: 2px; }
+        
+        .nav-link.active { 
+            color: var(--primary-light); 
+            background: rgba(217, 119, 6, 0.15); 
+            transform: translateY(-4px);
+        }
+        
+        .dashboard-card {
+            background: linear-gradient(145deg, #181412, #0e0b0a);
+            border: 1px solid rgba(255,255,255,0.03); 
+            border-radius: 20px; 
+            padding: 22px; 
+            margin-bottom: 18px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+            transition: transform 0.3s ease;
+        }
 
-       body {
-           font-family: 'Vazirmatn', sans-serif;
-           background-color: var(--bg);
-           color: #d1d5db;
-           margin: 0; padding: 0;
-           overflow-x: hidden;
-           -webkit-tap-highlight-color: transparent;
-       }
-       
-       .main-wrapper { width: 100%; max-width: 480px; margin: 0 auto; padding: 20px; min-height: 90vh; padding-bottom: 120px; }
-       
-       .nav-menu {
-           background: rgba(21, 17, 16, 0.96); backdrop-filter: blur(20px);
-           border-bottom: 1px solid #2d2421; padding: 12px 5px;
-           display: flex; justify-content: space-around; position: sticky; top: 0; z-index: 1000;
-       }
-       
-       .nav-link { color: #71717a; font-size: 11px; font-weight: 900; cursor: pointer; padding: 8px 10px; border-radius: 12px; transition: 0.3s; }
-       .nav-link.active { color: var(--primary); background: rgba(217, 119, 6, 0.1); }
-       
-       .dashboard-card {
-           background: linear-gradient(145deg, #151110, #0e0b0a);
-           border: 1px solid #241f1d; border-radius: 24px; padding: 22px; margin-bottom: 18px;
-           box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-       }
+        .prediction-box-style { 
+            border-right: 4px solid var(--primary); 
+            background: linear-gradient(90deg, rgba(217, 119, 6, 0.05) 0%, transparent 100%); 
+        }
 
-       .prediction-box-style { border-right: 4px solid var(--primary); background: rgba(217, 119, 6, 0.03); }
+        .refresh-btn {
+            background: linear-gradient(135deg, var(--primary), #ea580c);
+            color: #fff; 
+            padding: 16px; 
+            border-radius: 18px; 
+            font-weight: 900;
+            width: 100%; 
+            margin-bottom: 24px; 
+            border: none; 
+            box-shadow: 0 8px 25px rgba(217, 119, 6, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .refresh-btn:active { transform: scale(0.95); }
 
-       .refresh-btn {
-           background: linear-gradient(to right, var(--primary), var(--primary-light));
-           color: #000; padding: 16px; border-radius: 20px; font-weight: 900;
-           width: 100%; margin-bottom: 20px; border: none; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.2);
-       }
+        .input-admin {
+            width: 100%; background: #120e0d; border: 1px solid #2d2421; border-radius: 14px;
+            padding: 16px; color: white; margin-bottom: 14px; font-size: 14px;
+        }
+        .input-admin:focus { outline: none; border-color: var(--primary); }
 
-       .input-admin {
-           width: 100%; background: #1a1514; border: 1px solid #332a28; border-radius: 12px;
-           padding: 14px; color: white; margin-bottom: 10px; font-size: 14px;
-       }
+        .hidden { display: none !important; }
+        .spin { animation: spin 1s infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
+        
+        .section-title { font-size: 26px; font-weight: 900; color: white; margin-bottom: 24px; text-align: right; }
+        .section-title span { color: var(--primary); }
 
-       .hidden { display: none; }
-       .spin { animation: spin 1s linear infinite; }
-       @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-       
-       .section-title { font-size: 24px; font-weight: 900; color: white; margin-bottom: 24px; text-align: right; }
-       .section-title span { color: var(--primary); }
-   </style>
+        .swal2-popup { background: #151110 !important; color: #fff !important; border-radius: 24px !important; border: 1px solid #2d2421 !important; }
+        .swal2-title, .swal2-html-container { font-family: 'Vazirmatn', sans-serif !important; }
+        .swal2-confirm { background: var(--primary) !important; border-radius: 12px !important; font-weight: 900 !important; }
+    </style>
 </head>
 <body>
 
-   <nav class="nav-menu">
-       <div onclick="showPage('home')" id="nav-home" class="nav-link active">سەرەکی</div>
-       <div onclick="showPage('predictions')" id="nav-predictions" class="nav-link">پێشبینی</div>
-       <div onclick="showPage('admin')" id="nav-admin" class="nav-link"><i class="fas fa-lock text-[10px]"></i> کۆنترۆڵ</div>
-       <div onclick="showPage('about')" id="nav-about" class="nav-link">دەربارەی مە</div>
-       <div onclick="showPage('contact')" id="nav-contact" class="nav-link">پەیوەندی</div>
-   </nav>
+    <nav class="nav-menu">
+        <div onclick="showPage('home')" id="nav-home" class="nav-link active"><i class="fas fa-home"></i>سەرەکی</div>
+        <div onclick="showPage('predictions')" id="nav-predictions" class="nav-link"><i class="fas fa-chart-line"></i>پێشبینی</div>
+        <div onclick="showPage('about')" id="nav-about" class="nav-link"><i class="fas fa-info-circle"></i>دەربارە</div>
+        <div onclick="showPage('contact')" id="nav-contact" class="nav-link"><i class="fas fa-headset"></i>پەیوەندی</div>
+    </nav>
 
-   <!-- 1. HOME PAGE -->
-   <div id="home-page" class="main-wrapper">
-       <div class="flex justify-between items-center mb-8">
-           <div id="live-time" class="text-3xl font-black text-orange-500 font-mono tracking-tighter">00:00:00</div>
-           <div class="text-right">
-               <h1 class="text-2xl font-black text-white leading-tight">ناڤەندا <br><span class="text-orange-500">ستراتیژی</span></h1>
-           </div>
-       </div>
-       <button onclick="refreshData()" class="refresh-btn flex items-center justify-center gap-3">
-           <i id="refresh-icon" class="fas fa-sync-alt"></i> نووکرنا زانیاریان
-       </button>
-       <div id="feed-home" class="space-y-4"></div>
-   </div>
+    <div id="home-page" class="main-wrapper fade-in">
+        <div class="flex justify-between items-center mb-8 bg-white/5 p-4 rounded-2xl border border-white/5 shadow-lg">
+            <div id="live-time" class="text-2xl font-black text-orange-500 font-mono tracking-tighter">00:00:00</div>
+            <div class="text-right flex items-center gap-3">
+                <h1 class="text-xl font-black text-white leading-tight">ناڤەندا <br><span class="text-orange-500">ستراتیژی</span></h1>
+                <!-- Secret Trigger Area: Tap Globe Icon 5 times quickly -->
+                <div id="secret-trigger" onclick="handleSecretTap()" class="w-10 h-10 bg-orange-600/20 rounded-xl flex items-center justify-center border border-orange-500/30 cursor-pointer active:scale-90 transition">
+                    <i class="fas fa-globe-asia text-orange-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+        <button onclick="refreshData()" class="refresh-btn flex items-center justify-center gap-3">
+            <i id="refresh-icon" class="fas fa-sync-alt text-lg"></i> نووکرنا زانیاریان
+        </button>
+        <div id="feed-home" class="space-y-4"></div>
+    </div>
 
-   <!-- 2. PREDICTIONS PAGE -->
-   <div id="predictions-page" class="main-wrapper hidden">
-       <h2 class="section-title">چاڤدێریا <span>پێشبینیان</span></h2>
-       
-       <div class="dashboard-card prediction-box-style">
-           <div class="flex items-center justify-end gap-2 mb-4">
-               <span class="text-white font-black">پێشبینیێن کورت مەودا</span>
-               <i class="fas fa-bolt text-orange-500"></i>
-           </div>
-           <div id="box-short" class="text-[13px] text-zinc-300 text-right leading-relaxed space-y-3">ل چاڤەڕێیا داتایێ...</div>
-       </div>
+    <div id="predictions-page" class="main-wrapper hidden">
+        <h2 class="section-title">چاڤدێریا <span>پێشبینیان</span></h2>
+        
+        <div class="dashboard-card prediction-box-style relative overflow-hidden">
+            <div class="flex items-center justify-end gap-2 mb-4 relative z-10">
+                <span class="text-white font-black text-lg">پێشبینیێن کورت مەودا</span>
+                <div class="bg-orange-500/20 p-2 rounded-lg"><i class="fas fa-bolt text-orange-500"></i></div>
+            </div>
+            <div id="box-short" class="text-[14px] text-zinc-300 text-right leading-relaxed space-y-3 relative z-10">ل چاڤەڕێیا داتایێ...</div>
+        </div>
 
-       <div class="dashboard-card prediction-box-style">
-           <div class="flex items-center justify-end gap-2 mb-4">
-               <span class="text-white font-black">پێشبینیێن دوور مەودا</span>
-               <i class="fas fa-calendar-alt text-orange-500"></i>
-           </div>
-           <div id="box-long" class="text-[13px] text-zinc-300 text-right leading-relaxed space-y-3">ل چاڤەڕێیا داتایێ...</div>
-       </div>
+        <div class="dashboard-card prediction-box-style relative overflow-hidden">
+            <div class="flex items-center justify-end gap-2 mb-4 relative z-10">
+                <span class="text-white font-black text-lg">پێشبینیێن دوور مەودا</span>
+                <div class="bg-orange-500/20 p-2 rounded-lg"><i class="fas fa-calendar-alt text-orange-500"></i></div>
+            </div>
+            <div id="box-long" class="text-[14px] text-zinc-300 text-right leading-relaxed space-y-3 relative z-10">ل چاڤەڕێیا داتایێ...</div>
+        </div>
 
-       <div class="dashboard-card prediction-box-style">
-           <div class="flex items-center justify-end gap-2 mb-4">
-               <span class="text-white font-black">پێشبینیێن چاڤدێرێن سیاسی</span>
-               <i class="fas fa-user-tie text-orange-500"></i>
-           </div>
-           <div id="box-observers" class="text-[13px] text-zinc-300 text-right leading-relaxed space-y-3">ل چاڤەڕێیا داتایێ...</div>
-       </div>
+        <div class="dashboard-card prediction-box-style relative overflow-hidden">
+            <div class="flex items-center justify-end gap-2 mb-4 relative z-10">
+                <span class="text-white font-black text-lg">پێشبینیێن چاڤدێرێن سیاسی</span>
+                <div class="bg-orange-500/20 p-2 rounded-lg"><i class="fas fa-user-tie text-orange-500"></i></div>
+            </div>
+            <div id="box-observers" class="text-[14px] text-zinc-300 text-right leading-relaxed space-y-3 relative z-10">ل چاڤەڕێیا داتایێ...</div>
+        </div>
 
-       <div id="feed-predictions" class="mt-8 space-y-4"></div>
-   </div>
+        <div id="feed-predictions" class="mt-8 space-y-4"></div>
+    </div>
 
-   <!-- 3. ADMIN PAGE (KONTROL) -->
-   <div id="admin-page" class="main-wrapper hidden">
-       <div id="login-section" class="dashboard-card">
-           <h2 class="text-xl font-black text-white mb-6 text-center">چوونە ژوور بۆ <span class="text-orange-500">کۆنترۆڵێ</span></h2>
-           <input type="text" id="admin-email" class="input-admin" placeholder="ئیمێل...">
-           <input type="password" id="admin-pass" class="input-admin" placeholder="پاسوۆرد...">
-           <button onclick="handleLogin()" class="w-full bg-orange-600 text-black font-black py-4 rounded-xl mt-2 active:scale-95 transition">چوونە ژوور</button>
-       </div>
+    <div id="admin-page" class="main-wrapper hidden">
+        <div id="login-section" class="dashboard-card mt-10">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-orange-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-orange-500/30">
+                    <i class="fas fa-lock text-orange-500 text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-black text-white">چوونە ژوور</h2>
+                <p class="text-zinc-500 text-xs mt-1">تایبەتە ب ڕێڤەبەریێ ڤە</p>
+            </div>
+            <input type="text" id="admin-email" class="input-admin text-center" placeholder="ئیمێل...">
+            <input type="password" id="admin-pass" class="input-admin text-center" placeholder="پاسوۆرد...">
+            <button onclick="handleLogin()" class="w-full bg-gradient-to-r from-orange-500 to-orange-700 text-white font-black py-4 rounded-xl mt-4 active:scale-95 transition shadow-lg shadow-orange-500/20">چوونە ژوور</button>
+            <button onclick="showPage('home')" class="w-full bg-zinc-800 text-zinc-400 font-bold py-3 rounded-xl mt-2 active:scale-95 transition text-sm">زڤڕین بۆ سەرەکی</button>
+        </div>
 
-       <div id="control-panel" class="hidden">
-           <div class="flex justify-between items-center mb-6">
-               <button onclick="logout()" class="text-xs text-red-500 font-bold underline">دەرکەفتن</button>
-               <h2 class="section-title mb-0">بەلاڤکرنا <span>زانیاریان</span></h2>
-           </div>
+        <div id="control-panel" class="hidden">
+            <div class="flex justify-between items-center mb-6">
+                <button onclick="logout()" class="px-4 py-2 bg-red-500/10 text-red-500 rounded-lg text-sm font-bold border border-red-500/20 active:scale-95">دەرکەفتن</button>
+                <h2 class="section-title mb-0">بەلاڤکرنا <span>زانیاریان</span></h2>
+            </div>
 
-           <div class="dashboard-card space-y-4">
-               <select id="post-category" class="input-admin" onchange="toggleAdminSub()">
-                   <option value="home">نویچەیێن سەرەکی (Home)</option>
-                   <option value="predictions">پێشبینی (Predictions)</option>
-               </select>
+            <div class="dashboard-card space-y-4 border-orange-500/20">
+                <select id="post-category" class="input-admin" onchange="toggleAdminSub()" dir="rtl">
+                    <option value="home">نویچەیێن سەرەکی (Home)</option>
+                    <option value="predictions">پێشبینی (Predictions)</option>
+                </select>
 
-               <div id="admin-sub-wrap" class="hidden">
-                   <select id="post-sub" class="input-admin">
-                       <option value="short">کورت مەودا</option>
-                       <option value="long">دوور مەودا</option>
-                       <option value="observers">چاڤدێرێن سیاسی</option>
-                   </select>
-               </div>
+                <div id="admin-sub-wrap" class="hidden">
+                    <select id="post-sub" class="input-admin" dir="rtl">
+                        <option value="short">کورت مەودا</option>
+                        <option value="long">دوور مەودا</option>
+                        <option value="observers">چاڤدێرێن سیاسی</option>
+                    </select>
+                </div>
 
-               <input type="text" id="post-tag" class="input-admin" placeholder="تاگ (نموونە: بەپەلە)">
-               <input type="text" id="post-title" class="input-admin" placeholder="ناڤ و نیشان">
-               <textarea id="post-text" class="input-admin h-32" placeholder="دەقێ نویچەی بنڤیسە..."></textarea>
+                <input type="text" id="post-tag" class="input-admin" placeholder="تاگ (نموونە: بەپەلە)">
+                <input type="text" id="post-title" class="input-admin font-bold" placeholder="ناڤ و نیشان">
+                <textarea id="post-text" class="input-admin h-40 resize-none leading-relaxed" placeholder="دەقێ نویچەی ل ڤێرە بنڤیسە..."></textarea>
 
-               <button onclick="submitPost()" id="publish-btn" class="w-full bg-green-600 text-black font-black py-4 rounded-xl shadow-lg active:scale-95 transition">بەلاڤ بکە</button>
-           </div>
+                <button onclick="submitPost()" id="publish-btn" class="w-full bg-gradient-to-r from-green-600 to-green-500 text-white font-black py-4 rounded-xl shadow-lg shadow-green-600/20 active:scale-95 transition text-lg">بەلاڤ بکە <i class="fas fa-paper-plane ml-2"></i></button>
+            </div>
 
-           <div class="mt-8">
-               <h3 class="text-white font-bold text-right mb-4">ڕێڤەبرنا نویچەیان:</h3>
-               <div id="admin-history-list" class="space-y-2"></div>
-           </div>
-       </div>
-   </div>
+            <div class="mt-8">
+                <h3 class="text-white font-bold text-right mb-4 flex items-center justify-end gap-2">ڕێڤەبرنا نویچەیان <i class="fas fa-tasks text-orange-500"></i></h3>
+                <div id="admin-history-list" class="space-y-3"></div>
+            </div>
+        </div>
+    </div>
 
-   <!-- 4. ABOUT PAGE -->
-   <div id="about-page" class="main-wrapper hidden">
-       <h2 class="section-title">دەربارەی <span>مە</span></h2>
-       <div class="dashboard-card text-right">
-           <p class="text-[14px] leading-7 text-zinc-300 font-medium">
-               ناڤەندا ستراتیژی دەزگەهەکێ سەربەخۆ یێ چاڤدێری و شۆپاندنا روودانێن سیاسی و ئەمنی یە ل دەڤەرێ. کارێ مە یێ سەرەکی دابینکرنا وێنەیەکێ ڕاستەقینە و بێ لایەنە.
-           </p>
-       </div>
-   </div>
+    <div id="about-page" class="main-wrapper hidden">
+        <h2 class="section-title">دەربارەی <span>مە</span></h2>
+        <div class="dashboard-card text-right flex flex-col items-center">
+            <img src="https://ui-avatars.com/api/?name=Monitor+Pro&background=d97706&color=fff&size=100&rounded=true" alt="Logo" class="w-24 h-24 mb-6 shadow-xl shadow-orange-500/20">
+            <p class="text-[15px] leading-8 text-zinc-300 font-medium text-justify" dir="rtl">
+                ناڤەندا ستراتیژی دەزگەهەکێ سەربەخۆ یێ چاڤدێری و شۆپاندنا روودانێن سیاسی و ئەمنی یە ل دەڤەرێ. کارێ مە یێ سەرەکی دابینکرنا وێنەیەکێ ڕاستەقینە و بێ لایەنە بۆ خواندەڤایێن مە ب پشتبەستن ب سەرچاوەیێن باوەرپێکری.
+            </p>
+        </div>
+    </div>
 
-   <!-- 5. CONTACT PAGE -->
-   <div id="contact-page" class="main-wrapper hidden text-right">
-       <h2 class="section-title">رێیێن <span>پەیوەندیێ</span></h2>
-       <div class="grid grid-cols-1 gap-4">
-           <a href="https://wa.me/9647502274597" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-[#075e54]/5 border-[#075e54]/20 active:scale-95 transition">
-               <i class="fab fa-whatsapp text-[#25d366] text-2xl"></i>
-               <div class="text-right">
-                   <span class="text-white font-bold block">WhatsApp / Mobile</span>
-                   <span class="text-[12px] text-zinc-400">+964 750 227 4597</span>
-               </div>
-           </a>
-           <a href="https://www.instagram.com/chiy4stan?igsh=YndrYTVsYzBwZjhq" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-[#c13584]/5 border-[#c13584]/20 active:scale-95 transition">
-               <i class="fab fa-instagram text-[#e1306c] text-2xl"></i>
-               <div class="text-right">
-                   <span class="text-white font-bold block">Instagram</span>
-                   <span class="text-[12px] text-zinc-400">@chiy4stan</span>
-               </div>
-           </a>
-           <a href="mailto:kurdpost1221@gmail.com" class="dashboard-card flex items-center justify-between p-5 bg-[#d97706]/5 border-[#d97706]/20 active:scale-95 transition">
-               <i class="fas fa-envelope text-[#d97706] text-2xl"></i>
-               <div class="text-right">
-                   <span class="text-white font-bold block">Email</span>
-                   <span class="text-[12px] text-zinc-400">kurdpost1221@gmail.com</span>
-               </div>
-           </a>
-           <a href="https://www.facebook.com/share/1DaNThSCGR/?mibextid=wwXIfr" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-[#1877f2]/5 border-[#1877f2]/20 active:scale-95 transition">
-               <i class="fab fa-facebook-f text-[#1877f2] text-2xl"></i>
-               <div class="text-right">
-                   <span class="text-white font-bold block">Facebook</span>
-                   <span class="text-[12px] text-zinc-400">فەرمی پەیج</span>
-               </div>
-           </a>
-       </div>
-   </div>
+    <div id="contact-page" class="main-wrapper hidden text-right">
+        <h2 class="section-title">رێیێن <span>پەیوەندیێ</span></h2>
+        <div class="grid grid-cols-1 gap-4 mt-6">
+            <a href="https://wa.me/9647502274597" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-gradient-to-l from-[#075e54]/20 to-transparent border-[#075e54]/30 active:scale-95 transition hover:border-[#25d366]">
+                <div class="bg-[#25d366]/20 w-12 h-12 rounded-full flex items-center justify-center"><i class="fab fa-whatsapp text-[#25d366] text-2xl"></i></div>
+                <div class="text-right">
+                    <span class="text-white font-bold block text-lg">WhatsApp</span>
+                    <span class="text-[13px] text-zinc-400 mt-1 block tracking-wider" dir="ltr">+964 750 227 4597</span>
+                </div>
+            </a>
+            <a href="https://www.instagram.com/chiy4stan?igsh=YndrYTVsYzBwZjhq" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-gradient-to-l from-[#c13584]/20 to-transparent border-[#c13584]/30 active:scale-95 transition hover:border-[#e1306c]">
+                <div class="bg-[#e1306c]/20 w-12 h-12 rounded-full flex items-center justify-center"><i class="fab fa-instagram text-[#e1306c] text-2xl"></i></div>
+                <div class="text-right">
+                    <span class="text-white font-bold block text-lg">Instagram</span>
+                    <span class="text-[13px] text-zinc-400 mt-1 block">@chiy4stan</span>
+                </div>
+            </a>
+            <a href="mailto:kurdpost1221@gmail.com" class="dashboard-card flex items-center justify-between p-5 bg-gradient-to-l from-[#d97706]/20 to-transparent border-[#d97706]/30 active:scale-95 transition hover:border-[#fbbf24]">
+                <div class="bg-orange-500/20 w-12 h-12 rounded-full flex items-center justify-center"><i class="fas fa-envelope text-orange-500 text-xl"></i></div>
+                <div class="text-right">
+                    <span class="text-white font-bold block text-lg">Email</span>
+                    <span class="text-[13px] text-zinc-400 mt-1 block">kurdpost1221@gmail.com</span>
+                </div>
+            </a>
+            <a href="https://www.facebook.com/share/1DaNThSCGR/?mibextid=wwXIfr" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-gradient-to-l from-[#1877f2]/20 to-transparent border-[#1877f2]/30 active:scale-95 transition hover:border-[#1877f2]">
+                <div class="bg-[#1877f2]/20 w-12 h-12 rounded-full flex items-center justify-center"><i class="fab fa-facebook-f text-[#1877f2] text-2xl"></i></div>
+                <div class="text-right">
+                    <span class="text-white font-bold block text-lg">Facebook</span>
+                    <span class="text-[13px] text-zinc-400 mt-1 block">فەرمی پەیج</span>
+                </div>
+            </a>
+        </div>
+    </div>
 
-   <script>
-       // Security Hashing (Simple)
-       const _u = "zinarbrhanmustefa";
-       const _p = "zinarbrhan";
+    <script>
+        const _u = "zinarbrhanmustefa";
+        const _p = "zinarbrhan";
 
-       const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-       const appId = typeof __app_id !== 'undefined' ? __app_id : 'tactical-v6-pro-final';
-       const dbPath = `artifacts/${appId}/public/data/monitor_final`;
+        let isAdmin = false;
+        let secretTapCount = 0;
+        let secretTimer = null;
+        
+        let allData = [
+            {
+                id: '1',
+                title: 'ب خێرهاتی بۆ ناڤەندا ستراتیژی',
+                text: 'ئەڤە وێبسایتێ تە ب شێوەیەکێ سەرکەفتی کەفتە کار. نووکرنێن ڕۆژانە دێ ل ڤێرە هێنە بەلاڤکرن.',
+                category: 'home',
+                tag: 'پێشەکی',
+                timestamp: new Date()
+            }
+        ];
 
-       if (firebaseConfig.apiKey) firebase.initializeApp(firebaseConfig);
-       const db = firebase.firestore();
-       const auth = firebase.auth();
+        function handleSecretTap() {
+            secretTapCount++;
+            clearTimeout(secretTimer);
+            
+            if (secretTapCount >= 5) {
+                secretTapCount = 0;
+                showPage('admin');
+            } else {
+                secretTimer = setTimeout(() => {
+                    secretTapCount = 0;
+                }, 1000); // Resets if taps are too slow (>1 second)
+            }
+        }
 
-       let allData = [];
-       let isAdmin = false;
+        function renderUI() {
+            const boxes = ['box-short', 'box-long', 'box-observers', 'feed-home', 'feed-predictions', 'admin-history-list'];
+            boxes.forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = ''; });
 
-       async function init() {
-           try {
-               await auth.signInAnonymously();
-               listenToData();
-           } catch(e) { console.error(e); }
-       }
+            const sorted = [...allData].sort((a,b) => b.timestamp - a.timestamp);
 
-       function listenToData() {
-           db.collection(dbPath).onSnapshot(snap => {
-               allData = [];
-               snap.forEach(doc => allData.push({ id: doc.id, ...doc.data() }));
-               renderUI();
-           });
-       }
+            sorted.forEach(item => {
+                const card = createCard(item);
+                if (item.category === 'home') document.getElementById('feed-home').appendChild(card);
+                else if (item.category === 'predictions') {
+                    if (['short','long','observers'].includes(item.sub)) {
+                        const box = document.getElementById('box-' + item.sub);
+                        box.innerHTML += `<div class="p-4 bg-[#110e0c] rounded-xl mb-3 border-r-2 border-orange-500 shadow-sm shadow-black/50 fade-in"><p class="text-zinc-300 leading-relaxed text-[14px]"><strong>${item.title}:</strong> <span class="text-zinc-400">${item.text}</span></p></div>`;
+                    } else {
+                        document.getElementById('feed-predictions').appendChild(card);
+                    }
+                }
 
-       function renderUI() {
-           const boxes = ['box-short', 'box-long', 'box-observers', 'feed-home', 'feed-predictions', 'admin-history-list'];
-           boxes.forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = ''; });
+                if (isAdmin) {
+                    const h = document.createElement('div');
+                    h.className = "bg-[#110e0c] border border-white/5 p-4 rounded-xl flex flex-row-reverse justify-between items-center mb-3 shadow-md fade-in";
+                    h.innerHTML = `
+                        <button onclick="deleteDoc('${item.id}')" class="bg-red-500/10 text-red-500 p-2 rounded-lg hover:bg-red-500/20 transition"><i class="fas fa-trash"></i></button> 
+                        <div class="text-right flex-1 mr-4">
+                            <span class="text-white text-sm font-bold block truncate">${item.title}</span>
+                            <span class="text-orange-500 text-[10px] uppercase">${item.tag || 'UPDATE'}</span>
+                        </div>`;
+                    document.getElementById('admin-history-list').appendChild(h);
+                }
+            });
+        }
 
-           const sorted = [...allData].sort((a,b) => (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0));
+        function createCard(item) {
+            const div = document.createElement('div');
+            div.className = "dashboard-card fade-in";
+            const d = new Date(item.timestamp);
+            const time = d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+            
+            div.innerHTML = `
+                <div class="flex justify-between items-center mb-5 border-b border-white/5 pb-3">
+                    <span class="text-[11px] text-orange-400 font-black uppercase tracking-wider bg-orange-500/10 px-3 py-1.5 rounded-lg border border-orange-500/20 shadow-inner"><i class="fas fa-tag ml-1"></i> ${item.tag || 'نویچە'}</span>
+                    <span class="text-[12px] text-zinc-500 font-black bg-black/40 px-3 py-1.5 rounded-lg"><i class="far fa-clock ml-1"></i> ${time}</span>
+                </div>
+                <h3 class="text-white font-black mb-3 text-right text-lg leading-snug">${item.title}</h3>
+                <p class="text-right text-[15px] leading-8 text-zinc-300 font-medium text-justify" dir="rtl">${item.text.replace(/\\n/g, '<br>')}</p>
+            `;
+            return div;
+        }
 
-           sorted.forEach(item => {
-               const card = createCard(item);
-               if (item.category === 'home') document.getElementById('feed-home').appendChild(card);
-               else if (item.category === 'predictions') {
-                   if (['short','long','observers'].includes(item.sub)) {
-                       const box = document.getElementById('box-' + item.sub);
-                       box.innerHTML += `<div class="p-3 bg-black/40 rounded-xl mb-3 border-r-2 border-orange-500/40"><p class="text-zinc-200"><strong>${item.title}:</strong> ${item.text}</p></div>`;
-                   } else {
-                       document.getElementById('feed-predictions').appendChild(card);
-                   }
-               }
+        function handleLogin() {
+            const u = document.getElementById('admin-email').value;
+            const p = document.getElementById('admin-pass').value;
+            if (u === _u && p === _p) {
+                isAdmin = true;
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('control-panel').classList.remove('hidden');
+                document.getElementById('control-panel').classList.add('fade-in');
+                
+                Swal.fire({
+                    title: 'ب خێرهاتی!',
+                    text: 'تو ب سەرکەفتی چویە ژوور.',
+                    icon: 'success',
+                    confirmButtonText: 'باشە',
+                    timer: 2000
+                });
+                
+                renderUI();
+            } else {
+                Swal.fire({
+                    title: 'شاشەیە!',
+                    text: 'ئیمێل یان پاسۆرد یێ خەلەتە!',
+                    icon: 'error',
+                    confirmButtonText: 'جارەکا دی بزاڤێ بکە'
+                });
+            }
+        }
 
-               if (isAdmin) {
-                   const h = document.createElement('div');
-                   h.className = "bg-white/5 p-3 rounded-lg flex justify-between items-center text-xs mb-2";
-                   h.innerHTML = `<button onclick="deleteDoc('${item.id}')" class="text-red-500 font-bold">ژێببە</button> <span class="text-zinc-400 truncate ml-2">${item.title}</span>`;
-                   document.getElementById('admin-history-list').appendChild(h);
-               }
-           });
-       }
+        function logout() { 
+            Swal.fire({
+                title: 'پشتراستی بۆ دەرکەفتنێ؟',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'بەلێ، دەرکەڤە',
+                cancelButtonText: 'نەخێر',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3f3f46'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    isAdmin = false; 
+                    document.getElementById('login-section').classList.remove('hidden');
+                    document.getElementById('control-panel').classList.add('hidden');
+                    document.getElementById('admin-email').value = '';
+                    document.getElementById('admin-pass').value = '';
+                    showPage('home');
+                    renderUI();
+                }
+            });
+        }
 
-       function createCard(item) {
-           const div = document.createElement('div');
-           div.className = "dashboard-card";
-           const time = item.timestamp ? item.timestamp.toDate().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'}) : '--:--';
-           div.innerHTML = `
-               <div class="flex justify-between items-center mb-4">
-                   <span class="text-[10px] text-orange-500 font-black uppercase bg-orange-600/10 px-3 py-1 rounded-full">${item.tag || 'UPDATE'}</span>
-                   <span class="text-[10px] text-zinc-600 font-black">${time}</span>
-               </div>
-               <h3 class="text-white font-black mb-3 text-right text-lg">${item.title}</h3>
-               <p class="text-right text-[15px] leading-relaxed text-zinc-300 font-medium">${item.text}</p>
-           `;
-           return div;
-       }
+        function toggleAdminSub() { 
+            const wrap = document.getElementById('admin-sub-wrap');
+            if(document.getElementById('post-category').value === 'predictions') {
+                wrap.classList.remove('hidden');
+                wrap.classList.add('fade-in');
+            } else {
+                wrap.classList.add('hidden');
+                wrap.classList.remove('fade-in');
+            }
+        }
 
-       function handleLogin() {
-           const u = document.getElementById('admin-email').value;
-           const p = document.getElementById('admin-pass').value;
-           if (u === _u && p === _p) {
-               isAdmin = true;
-               document.getElementById('login-section').classList.add('hidden');
-               document.getElementById('control-panel').classList.remove('hidden');
-               renderUI();
-           } else alert("شاشەیە!");
-       }
+        function submitPost() {
+            const title = document.getElementById('post-title').value;
+            const text = document.getElementById('post-text').value;
+            const cat = document.getElementById('post-category').value;
+            const sub = document.getElementById('post-sub').value;
+            
+            if(!title || !text) {
+                return Swal.fire({ title: 'ئاگاداری!', text: 'هیڤی دکەین هەمی خانەیان پڕ بکەی.', icon: 'warning', confirmButtonText: 'باشە' });
+            }
+            
+            const newItem = {
+                id: Date.now().toString(),
+                title: title,
+                text: text,
+                category: cat,
+                tag: document.getElementById('post-tag').value || 'UPDATE',
+                sub: cat === 'predictions' ? sub : '',
+                timestamp: new Date()
+            };
 
-       function logout() { isAdmin = false; location.reload(); }
+            allData.push(newItem);
+            renderUI();
 
-       function toggleAdminSub() { document.getElementById('admin-sub-wrap').classList.toggle('hidden', document.getElementById('post-category').value !== 'predictions'); }
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-text').value = '';
+            document.getElementById('post-tag').value = '';
+            
+            Swal.fire({ title: 'سەرکەفتی!', text: 'نویچە ب سەرکەفتی بەلاڤ بوو.', icon: 'success', confirmButtonText: 'باشە', timer: 2000 });
+        }
 
-       async function submitPost() {
-           const title = document.getElementById('post-title').value;
-           const text = document.getElementById('post-text').value;
-           const cat = document.getElementById('post-category').value;
-           const sub = document.getElementById('post-sub').value;
-           if(!title || !text) return alert("خانەیان پڕ بکە!");
-           
-           document.getElementById('publish-btn').disabled = true;
-           try {
-               await db.collection(dbPath).add({
-                   title, text, category: cat, tag: document.getElementById('post-tag').value || 'UPDATE',
-                   sub: cat === 'predictions' ? sub : '',
-                   timestamp: firebase.firestore.FieldValue.serverTimestamp()
-               });
-               document.getElementById('post-title').value = '';
-               document.getElementById('post-text').value = '';
-               alert("بە سەرکەفتی بەلاڤ بوو!");
-           } catch(e) { alert("Error!"); }
-           document.getElementById('publish-btn').disabled = false;
-       }
+        function deleteDoc(id) { 
+            Swal.fire({
+                title: 'دڤێت ڤێ نویچەیێ ژێببەی؟',
+                text: "پشتی ژێبرنێ ناهێتە زڤڕاندن!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'بەلێ، ژێببە',
+                cancelButtonText: 'پەشێمان بووم',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3f3f46'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    allData = allData.filter(item => item.id !== id);
+                    renderUI();
+                    Swal.fire({title: 'ژێبرن!', text: 'نویچە ژێبروو.', icon: 'success', confirmButtonText: 'باشە', timer: 1500});
+                }
+            });
+        }
 
-       async function deleteDoc(id) { if(confirm("ژێببەم؟")) await db.collection(dbPath).doc(id).delete(); }
+        function showPage(id) {
+            document.querySelectorAll('.main-wrapper').forEach(p => {
+                p.classList.add('hidden');
+                p.classList.remove('fade-in');
+            });
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            
+            const page = document.getElementById(id + '-page');
+            page.classList.remove('hidden');
+            setTimeout(() => page.classList.add('fade-in'), 10);
+            
+            const navLink = document.getElementById('nav-' + id);
+            if (navLink) navLink.classList.add('active');
+            window.scrollTo(0,0);
+        }
 
-       function showPage(id) {
-           document.querySelectorAll('.main-wrapper').forEach(p => p.classList.add('hidden'));
-           document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-           document.getElementById(id + '-page').classList.remove('hidden');
-           document.getElementById('nav-' + id).classList.add('active');
-           window.scrollTo(0,0);
-       }
+        function refreshData() {
+            const icon = document.getElementById('refresh-icon');
+            icon.classList.add('spin');
+            renderUI();
+            setTimeout(() => icon.classList.remove('spin'), 1000);
+        }
 
-       function refreshData() {
-           const icon = document.getElementById('refresh-icon');
-           icon.classList.add('spin');
-           listenToData();
-           setTimeout(() => icon.classList.remove('spin'), 1000);
-       }
+        setInterval(() => {
+            const el = document.getElementById('live-time');
+            if(el) el.innerText = new Date().toLocaleTimeString('en-GB', {hour12:false});
+        }, 1000);
 
-       setInterval(() => {
-           const el = document.getElementById('live-time');
-           if(el) el.innerText = new Date().toLocaleTimeString('en-GB', {hour12:false});
-       }, 1000);
-
-       window.onload = init;
-   </script>
+        window.onload = () => {
+            renderUI();
+        };
+    </script>
 </body>
 </html>
