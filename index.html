@@ -288,16 +288,35 @@
         let secretTapCount = 0;
         let secretTimer = null;
         
-        let allData = [
-            {
-                id: '1',
-                title: 'ب خێرهاتی بۆ ناڤەندا ستراتیژی',
-                text: 'ئەڤە وێبسایتێ تە ب شێوەیەکێ سەرکەفتی کەفتە کار. نووکرنێن ڕۆژانە دێ ل ڤێرە هێنە بەلاڤکرن.',
-                category: 'home',
-                tag: 'پێشەکی',
-                timestamp: new Date()
+        // Load data from localStorage to persist across refreshes
+        let allData = [];
+        try {
+            const savedData = localStorage.getItem('monitor_pro_data_v7');
+            if (savedData) {
+                allData = JSON.parse(savedData);
+            } else {
+                // Default initial post
+                allData = [
+                    {
+                        id: '1',
+                        title: 'ب خێرهاتی بۆ ناڤەندا ستراتیژی',
+                        text: 'ئەڤە وێبسایتێ تە ب شێوەیەکێ سەرکەفتی کەفتە کار. نووکرنێن ڕۆژانە دێ ل ڤێرە هێنە بەلاڤکرن.',
+                        category: 'home',
+                        tag: 'پێشەکی',
+                        timestamp: new Date().getTime()
+                    }
+                ];
+                localStorage.setItem('monitor_pro_data_v7', JSON.stringify(allData));
             }
-        ];
+        } catch(e) {
+            allData = [];
+        }
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem('monitor_pro_data_v7', JSON.stringify(allData));
+            } catch(e) {}
+        }
 
         function handleSecretTap() {
             secretTapCount++;
@@ -309,7 +328,7 @@
             } else {
                 secretTimer = setTimeout(() => {
                     secretTapCount = 0;
-                }, 1000); // Resets if taps are too slow (>1 second)
+                }, 1000); 
             }
         }
 
@@ -319,13 +338,23 @@
 
             const sorted = [...allData].sort((a,b) => b.timestamp - a.timestamp);
 
+            let hasShort = false, hasLong = false, hasObs = false;
+
             sorted.forEach(item => {
                 const card = createCard(item);
-                if (item.category === 'home') document.getElementById('feed-home').appendChild(card);
-                else if (item.category === 'predictions') {
+                if (item.category === 'home') {
+                    document.getElementById('feed-home').appendChild(card);
+                } else if (item.category === 'predictions') {
                     if (['short','long','observers'].includes(item.sub)) {
                         const box = document.getElementById('box-' + item.sub);
+                        // Clear placeholder if first real item
+                        if(box.innerText.includes('ل چاڤەڕێیا داتایێ')) box.innerHTML = '';
+                        
                         box.innerHTML += `<div class="p-4 bg-[#110e0c] rounded-xl mb-3 border-r-2 border-orange-500 shadow-sm shadow-black/50 fade-in"><p class="text-zinc-300 leading-relaxed text-[14px]"><strong>${item.title}:</strong> <span class="text-zinc-400">${item.text}</span></p></div>`;
+                        
+                        if(item.sub === 'short') hasShort = true;
+                        if(item.sub === 'long') hasLong = true;
+                        if(item.sub === 'observers') hasObs = true;
                     } else {
                         document.getElementById('feed-predictions').appendChild(card);
                     }
@@ -343,6 +372,11 @@
                     document.getElementById('admin-history-list').appendChild(h);
                 }
             });
+
+            // Fallbacks if boxes empty
+            if(!hasShort) document.getElementById('box-short').innerHTML = '<span class="text-zinc-500">چ پێشبینیێن کورت مەودا نینن.</span>';
+            if(!hasLong) document.getElementById('box-long').innerHTML = '<span class="text-zinc-500">چ پێشبینیێن دوور مەودا نینن.</span>';
+            if(!hasObs) document.getElementById('box-observers').innerHTML = '<span class="text-zinc-500">چ داتا ژ چاڤدێرێن سیاسی نینن.</span>';
         }
 
         function createCard(item) {
@@ -440,17 +474,18 @@
                 category: cat,
                 tag: document.getElementById('post-tag').value || 'UPDATE',
                 sub: cat === 'predictions' ? sub : '',
-                timestamp: new Date()
+                timestamp: new Date().getTime()
             };
 
             allData.push(newItem);
+            saveToStorage();
             renderUI();
 
             document.getElementById('post-title').value = '';
             document.getElementById('post-text').value = '';
             document.getElementById('post-tag').value = '';
             
-            Swal.fire({ title: 'سەرکەفتی!', text: 'نویچە ب سەرکەفتی بەلاڤ بوو.', icon: 'success', confirmButtonText: 'باشە', timer: 2000 });
+            Swal.fire({ title: 'سەرکەفتی!', text: 'نویچە ب سەرکەفتی بەلاڤ بوو و هاتە خەزنکرن.', icon: 'success', confirmButtonText: 'باشە', timer: 2000 });
         }
 
         function deleteDoc(id) { 
@@ -466,6 +501,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     allData = allData.filter(item => item.id !== id);
+                    saveToStorage();
                     renderUI();
                     Swal.fire({title: 'ژێبرن!', text: 'نویچە ژێبروو.', icon: 'success', confirmButtonText: 'باشە', timer: 1500});
                 }
@@ -480,8 +516,10 @@
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             
             const page = document.getElementById(id + '-page');
-            page.classList.remove('hidden');
-            setTimeout(() => page.classList.add('fade-in'), 10);
+            if(page) {
+                page.classList.remove('hidden');
+                setTimeout(() => page.classList.add('fade-in'), 10);
+            }
             
             const navLink = document.getElementById('nav-' + id);
             if (navLink) navLink.classList.add('active');
