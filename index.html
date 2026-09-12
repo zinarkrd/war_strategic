@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ناڤەندا ستراتیژی - Monitor PRO v7</title>
+    <title>ناڤەندا ستراتیژی - Monitor PRO v8</title>
 
     <!-- Tailwind & Icons & SweetAlert2 -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -35,11 +35,11 @@
             margin: 0 auto; 
             padding: 20px; 
             min-height: 100vh; 
-            padding-bottom: 90px; 
+            padding-bottom: 110px; 
         }
         
         .nav-menu {
-            background: rgba(15, 12, 11, 0.85); 
+            background: rgba(15, 12, 11, 0.9); 
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-top: 1px solid rgba(217, 119, 6, 0.2); 
@@ -87,7 +87,6 @@
             padding: 22px; 
             margin-bottom: 18px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
-            transition: transform 0.3s ease;
         }
 
         .prediction-box-style { 
@@ -120,8 +119,8 @@
         .spin { animation: spin 1s infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
-        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
-        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
         
         .section-title { font-size: 26px; font-weight: 900; color: white; margin-bottom: 24px; text-align: right; }
         .section-title span { color: var(--primary); }
@@ -145,7 +144,6 @@
             <div id="live-time" class="text-2xl font-black text-orange-500 font-mono tracking-tighter">00:00:00</div>
             <div class="text-right flex items-center gap-3">
                 <h1 class="text-xl font-black text-white leading-tight">ناڤەندا <br><span class="text-orange-500">ستراتیژی</span></h1>
-                <!-- Secret Trigger Area: Tap Globe Icon 5 times quickly -->
                 <div id="secret-trigger" onclick="handleSecretTap()" class="w-10 h-10 bg-orange-600/20 rounded-xl flex items-center justify-center border border-orange-500/30 cursor-pointer active:scale-90 transition">
                     <i class="fas fa-globe-asia text-orange-500 text-xl"></i>
                 </div>
@@ -249,28 +247,28 @@
     <div id="contact-page" class="main-wrapper hidden text-right">
         <h2 class="section-title">رێیێن <span>پەیوەندیێ</span></h2>
         <div class="grid grid-cols-1 gap-4 mt-6">
-            <a href="https://wa.me/9647502274597" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-gradient-to-l from-[#075e54]/20 to-transparent border-[#075e54]/30 active:scale-95 transition hover:border-[#25d366]">
+            <a href="https://wa.me/9647502274597" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-gradient-to-l from-[#075e54]/20 to-transparent border-[#075e54]/30 active:scale-95 transition">
                 <div class="bg-[#25d366]/20 w-12 h-12 rounded-full flex items-center justify-center"><i class="fab fa-whatsapp text-[#25d366] text-2xl"></i></div>
                 <div class="text-right">
                     <span class="text-white font-bold block text-lg">WhatsApp</span>
                     <span class="text-[13px] text-zinc-400 mt-1 block tracking-wider" dir="ltr">+964 750 227 4597</span>
                 </div>
             </a>
-            <a href="https://www.instagram.com/chiy4stan?igsh=YndrYTVsYzBwZjhq" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-gradient-to-l from-[#c13584]/20 to-transparent border-[#c13584]/30 active:scale-95 transition hover:border-[#e1306c]">
+            <a href="https://www.instagram.com/chiy4stan?igsh=YndrYTVsYzBwZjhq" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-gradient-to-l from-[#c13584]/20 to-transparent border-[#c13584]/30 active:scale-95 transition">
                 <div class="bg-[#e1306c]/20 w-12 h-12 rounded-full flex items-center justify-center"><i class="fab fa-instagram text-[#e1306c] text-2xl"></i></div>
                 <div class="text-right">
                     <span class="text-white font-bold block text-lg">Instagram</span>
                     <span class="text-[13px] text-zinc-400 mt-1 block">@chiy4stan</span>
                 </div>
             </a>
-            <a href="mailto:kurdpost1221@gmail.com" class="dashboard-card flex items-center justify-between p-5 bg-gradient-to-l from-[#d97706]/20 to-transparent border-[#d97706]/30 active:scale-95 transition hover:border-[#fbbf24]">
+            <a href="mailto:kurdpost1221@gmail.com" class="dashboard-card flex items-center justify-between p-5 bg-gradient-to-l from-[#d97706]/20 to-transparent border-[#d97706]/30 active:scale-95 transition">
                 <div class="bg-orange-500/20 w-12 h-12 rounded-full flex items-center justify-center"><i class="fas fa-envelope text-orange-500 text-xl"></i></div>
                 <div class="text-right">
                     <span class="text-white font-bold block text-lg">Email</span>
                     <span class="text-[13px] text-zinc-400 mt-1 block">kurdpost1221@gmail.com</span>
                 </div>
             </a>
-            <a href="https://www.facebook.com/share/1DaNThSCGR/?mibextid=wwXIfr" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-gradient-to-l from-[#1877f2]/20 to-transparent border-[#1877f2]/30 active:scale-95 transition hover:border-[#1877f2]">
+            <a href="https://www.facebook.com/share/1DaNThSCGR/?mibextid=wwXIfr" target="_blank" class="dashboard-card flex items-center justify-between p-5 bg-gradient-to-l from-[#1877f2]/20 to-transparent border-[#1877f2]/30 active:scale-95 transition">
                 <div class="bg-[#1877f2]/20 w-12 h-12 rounded-full flex items-center justify-center"><i class="fab fa-facebook-f text-[#1877f2] text-2xl"></i></div>
                 <div class="text-right">
                     <span class="text-white font-bold block text-lg">Facebook</span>
@@ -288,33 +286,36 @@
         let secretTapCount = 0;
         let secretTimer = null;
         
-        // Load data from localStorage to persist across refreshes
         let allData = [];
-        try {
-            const savedData = localStorage.getItem('monitor_pro_data_v7');
-            if (savedData) {
-                allData = JSON.parse(savedData);
-            } else {
-                // Default initial post
-                allData = [
-                    {
-                        id: '1',
-                        title: 'ب خێرهاتی بۆ ناڤەندا ستراتیژی',
-                        text: 'ئەڤە وێبسایتێ تە ب شێوەیەکێ سەرکەفتی کەفتە کار. نووکرنێن ڕۆژانە دێ ل ڤێرە هێنە بەلاڤکرن.',
-                        category: 'home',
-                        tag: 'پێشەکی',
-                        timestamp: new Date().getTime()
-                    }
-                ];
-                localStorage.setItem('monitor_pro_data_v7', JSON.stringify(allData));
+        const STORAGE_KEY = 'monitor_pro_ultimate_data_v8';
+
+        function loadData() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    allData = JSON.parse(saved);
+                } else {
+                    allData = [
+                        {
+                            id: 'init_1',
+                            title: 'ب خێرهاتی بۆ ناڤەندا ستراتیژی',
+                            text: 'ئەڤە وێبسایتێ تە ب شێوەیەکێ سەرکەفتی کەفتە کار و نووکرنێن ڕۆژانە دێ ل ڤێرە هێنە بەلاڤکرن.',
+                            category: 'home',
+                            tag: 'پێشەکی',
+                            sub: '',
+                            timestamp: Date.now()
+                        }
+                    ];
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
+                }
+            } catch(e) {
+                allData = [];
             }
-        } catch(e) {
-            allData = [];
         }
 
         function saveToStorage() {
             try {
-                localStorage.setItem('monitor_pro_data_v7', JSON.stringify(allData));
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
             } catch(e) {}
         }
 
@@ -334,71 +335,96 @@
 
         function renderUI() {
             const boxes = ['box-short', 'box-long', 'box-observers', 'feed-home', 'feed-predictions', 'admin-history-list'];
-            boxes.forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = ''; });
+            boxes.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = '';
+            });
 
-            const sorted = [...allData].sort((a,b) => b.timestamp - a.timestamp);
+            const sorted = [...allData].sort((a, b) => b.timestamp - a.timestamp);
 
             let hasShort = false, hasLong = false, hasObs = false;
 
             sorted.forEach(item => {
                 const card = createCard(item);
                 if (item.category === 'home') {
-                    document.getElementById('feed-home').appendChild(card);
+                    const homeFeed = document.getElementById('feed-home');
+                    if (homeFeed) homeFeed.appendChild(card);
                 } else if (item.category === 'predictions') {
-                    if (['short','long','observers'].includes(item.sub)) {
+                    if (['short', 'long', 'observers'].includes(item.sub)) {
                         const box = document.getElementById('box-' + item.sub);
-                        // Clear placeholder if first real item
-                        if(box.innerText.includes('ل چاڤەڕێیا داتایێ')) box.innerHTML = '';
-                        
-                        box.innerHTML += `<div class="p-4 bg-[#110e0c] rounded-xl mb-3 border-r-2 border-orange-500 shadow-sm shadow-black/50 fade-in"><p class="text-zinc-300 leading-relaxed text-[14px]"><strong>${item.title}:</strong> <span class="text-zinc-400">${item.text}</span></p></div>`;
-                        
-                        if(item.sub === 'short') hasShort = true;
-                        if(item.sub === 'long') hasLong = true;
-                        if(item.sub === 'observers') hasObs = true;
+                        if (box) {
+                            if (box.innerText.includes('ل چاڤەڕێیا داتایێ')) box.innerHTML = '';
+                            box.innerHTML += `<div class="p-4 bg-[#110e0c] rounded-xl mb-3 border-r-2 border-orange-500 shadow-sm shadow-black/50 fade-in"><p class="text-zinc-300 leading-relaxed text-[14px]"><strong>${escapeHtml(item.title)}:</strong> <span class="text-zinc-400">${escapeHtml(item.text)}</span></p></div>`;
+                        }
+                        if (item.sub === 'short') hasShort = true;
+                        if (item.sub === 'long') hasLong = true;
+                        if (item.sub === 'observers') hasObs = true;
                     } else {
-                        document.getElementById('feed-predictions').appendChild(card);
+                        const predFeed = document.getElementById('feed-predictions');
+                        if (predFeed) predFeed.appendChild(card);
                     }
                 }
 
                 if (isAdmin) {
-                    const h = document.createElement('div');
-                    h.className = "bg-[#110e0c] border border-white/5 p-4 rounded-xl flex flex-row-reverse justify-between items-center mb-3 shadow-md fade-in";
-                    h.innerHTML = `
-                        <button onclick="deleteDoc('${item.id}')" class="bg-red-500/10 text-red-500 p-2 rounded-lg hover:bg-red-500/20 transition"><i class="fas fa-trash"></i></button> 
-                        <div class="text-right flex-1 mr-4">
-                            <span class="text-white text-sm font-bold block truncate">${item.title}</span>
-                            <span class="text-orange-500 text-[10px] uppercase">${item.tag || 'UPDATE'}</span>
-                        </div>`;
-                    document.getElementById('admin-history-list').appendChild(h);
+                    const historyList = document.getElementById('admin-history-list');
+                    if (historyList) {
+                        const h = document.createElement('div');
+                        h.className = "bg-[#110e0c] border border-white/5 p-4 rounded-xl flex flex-row-reverse justify-between items-center mb-3 shadow-md fade-in";
+                        h.innerHTML = `
+                            <button onclick="deleteDoc('${item.id}')" class="bg-red-500/10 text-red-500 p-2.5 rounded-lg hover:bg-red-500/20 active:scale-95 transition"><i class="fas fa-trash"></i></button> 
+                            <div class="text-right flex-1 mr-4 overflow-hidden">
+                                <span class="text-white text-sm font-bold block truncate">${escapeHtml(item.title)}</span>
+                                <span class="text-orange-500 text-[10px] uppercase">${escapeHtml(item.tag || 'UPDATE')}</span>
+                            </div>`;
+                        historyList.appendChild(h);
+                    }
                 }
             });
 
-            // Fallbacks if boxes empty
-            if(!hasShort) document.getElementById('box-short').innerHTML = '<span class="text-zinc-500">چ پێشبینیێن کورت مەودا نینن.</span>';
-            if(!hasLong) document.getElementById('box-long').innerHTML = '<span class="text-zinc-500">چ پێشبینیێن دوور مەودا نینن.</span>';
-            if(!hasObs) document.getElementById('box-observers').innerHTML = '<span class="text-zinc-500">چ داتا ژ چاڤدێرێن سیاسی نینن.</span>';
+            if (!hasShort) {
+                const b = document.getElementById('box-short');
+                if (b) b.innerHTML = '<span class="text-zinc-500">چ پێشبینیێن کورت مەودا نینن.</span>';
+            }
+            if (!hasLong) {
+                const b = document.getElementById('box-long');
+                if (b) b.innerHTML = '<span class="text-zinc-500">چ پێشبینیێن دوور مەودا نینن.</span>';
+            }
+            if (!hasObs) {
+                const b = document.getElementById('box-observers');
+                if (b) b.innerHTML = '<span class="text-zinc-500">چ داتا ژ چاڤدێرێن سیاسی نینن.</span>';
+            }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
 
         function createCard(item) {
             const div = document.createElement('div');
             div.className = "dashboard-card fade-in";
             const d = new Date(item.timestamp);
-            const time = d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+            const time = d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
             
             div.innerHTML = `
                 <div class="flex justify-between items-center mb-5 border-b border-white/5 pb-3">
-                    <span class="text-[11px] text-orange-400 font-black uppercase tracking-wider bg-orange-500/10 px-3 py-1.5 rounded-lg border border-orange-500/20 shadow-inner"><i class="fas fa-tag ml-1"></i> ${item.tag || 'نویچە'}</span>
+                    <span class="text-[11px] text-orange-400 font-black uppercase tracking-wider bg-orange-500/10 px-3 py-1.5 rounded-lg border border-orange-500/20 shadow-inner"><i class="fas fa-tag ml-1"></i> ${escapeHtml(item.tag || 'نویچە')}</span>
                     <span class="text-[12px] text-zinc-500 font-black bg-black/40 px-3 py-1.5 rounded-lg"><i class="far fa-clock ml-1"></i> ${time}</span>
                 </div>
-                <h3 class="text-white font-black mb-3 text-right text-lg leading-snug">${item.title}</h3>
-                <p class="text-right text-[15px] leading-8 text-zinc-300 font-medium text-justify" dir="rtl">${item.text.replace(/\\n/g, '<br>')}</p>
+                <h3 class="text-white font-black mb-3 text-right text-lg leading-snug">${escapeHtml(item.title)}</h3>
+                <p class="text-right text-[15px] leading-8 text-zinc-300 font-medium text-justify" dir="rtl">${escapeHtml(item.text).replace(/\\n/g, '<br>')}</p>
             `;
             return div;
         }
 
         function handleLogin() {
-            const u = document.getElementById('admin-email').value;
-            const p = document.getElementById('admin-pass').value;
+            const u = document.getElementById('admin-email').value.trim();
+            const p = document.getElementById('admin-pass').value.trim();
             if (u === _u && p === _p) {
                 isAdmin = true;
                 document.getElementById('login-section').classList.add('hidden');
@@ -448,7 +474,8 @@
 
         function toggleAdminSub() { 
             const wrap = document.getElementById('admin-sub-wrap');
-            if(document.getElementById('post-category').value === 'predictions') {
+            const cat = document.getElementById('post-category').value;
+            if (cat === 'predictions') {
                 wrap.classList.remove('hidden');
                 wrap.classList.add('fade-in');
             } else {
@@ -458,23 +485,24 @@
         }
 
         function submitPost() {
-            const title = document.getElementById('post-title').value;
-            const text = document.getElementById('post-text').value;
+            const title = document.getElementById('post-title').value.trim();
+            const text = document.getElementById('post-text').value.trim();
             const cat = document.getElementById('post-category').value;
             const sub = document.getElementById('post-sub').value;
+            const tag = document.getElementById('post-tag').value.trim() || 'بەپەلە';
             
-            if(!title || !text) {
+            if (!title || !text) {
                 return Swal.fire({ title: 'ئاگاداری!', text: 'هیڤی دکەین هەمی خانەیان پڕ بکەی.', icon: 'warning', confirmButtonText: 'باشە' });
             }
             
             const newItem = {
-                id: Date.now().toString(),
+                id: 'post_' + Date.now(),
                 title: title,
                 text: text,
                 category: cat,
-                tag: document.getElementById('post-tag').value || 'UPDATE',
+                tag: tag,
                 sub: cat === 'predictions' ? sub : '',
-                timestamp: new Date().getTime()
+                timestamp: Date.now()
             };
 
             allData.push(newItem);
@@ -503,7 +531,7 @@
                     allData = allData.filter(item => item.id !== id);
                     saveToStorage();
                     renderUI();
-                    Swal.fire({title: 'ژێبرن!', text: 'نویچە ژێبروو.', icon: 'success', confirmButtonText: 'باشە', timer: 1500});
+                    Swal.fire({ title: 'ژێبرن!', text: 'نویچە ژێبروو.', icon: 'success', confirmButtonText: 'باشە', timer: 1500 });
                 }
             });
         }
@@ -516,29 +544,33 @@
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             
             const page = document.getElementById(id + '-page');
-            if(page) {
+            if (page) {
                 page.classList.remove('hidden');
                 setTimeout(() => page.classList.add('fade-in'), 10);
             }
             
             const navLink = document.getElementById('nav-' + id);
             if (navLink) navLink.classList.add('active');
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
         }
 
         function refreshData() {
             const icon = document.getElementById('refresh-icon');
-            icon.classList.add('spin');
+            if (icon) icon.classList.add('spin');
+            loadData();
             renderUI();
-            setTimeout(() => icon.classList.remove('spin'), 1000);
+            setTimeout(() => {
+                if (icon) icon.classList.remove('spin');
+            }, 800);
         }
 
         setInterval(() => {
             const el = document.getElementById('live-time');
-            if(el) el.innerText = new Date().toLocaleTimeString('en-GB', {hour12:false});
+            if (el) el.innerText = new Date().toLocaleTimeString('en-GB', { hour12: false });
         }, 1000);
 
         window.onload = () => {
+            loadData();
             renderUI();
         };
     </script>
